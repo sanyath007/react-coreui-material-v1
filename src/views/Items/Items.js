@@ -68,11 +68,13 @@ class Items extends Component {
                 <Table responsive hover>
                   <thead>
                     <tr>
-                      <th scope="col">ID</th>
-                      <th scope="col">Name</th>
-                      <th scope="col">Unit</th>
-                      <th scope="col">Cost</th>
-                      <th scope="col">Actions</th>
+                      <th scope="col" style={{ width: '5%' }}>รหัส</th>
+                      <th scope="col">รายการวัสดุ</th>
+                      <th scope="col" style={{ width: '8%' }}>หน่วย</th>
+                      <th scope="col" style={{ width: '8%' }}>ราคา</th>
+                      <th scope="col" style={{ width: '8%' }}>คงเหลือ</th>
+                      <th scope="col" style={{ width: '15%' }}>ประเภท</th>
+                      <th scope="col" style={{ textAlign: 'center', width: '10%' }}>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -81,7 +83,9 @@ class Items extends Component {
                         <td>{ item.id }</td>
                         <td>{ item.name }</td>
                         <td>{ item.unit }</td>
-                        <td>{ item.cost }</td>                        
+                        <td>{ item.cost }</td>
+                        <td>{ item.balance }</td>
+                        <td>{ item.item_type.name }</td>
                         <td style={{ textAlign: "center" }}>
                           <Link
                             to={`/items/edit/${item.id}`}
