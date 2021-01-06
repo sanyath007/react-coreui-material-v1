@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { fetchItems } from '../../redux/items';
+import { fetchItemTypes } from '../../redux/itemTypes';
 
 import Pagination from '../../components/Paginations/Pagination';
 
@@ -14,11 +15,14 @@ class Items extends Component {
     pager: PropTypes.object,
     isSuccess: PropTypes.object,
     isError: PropTypes.any,
-    fetchItems: PropTypes.func.isRequired
+    itemTypes: PropTypes.array.isRequired,
+    fetchItems: PropTypes.func.isRequired,
+    fetchItemTypes: PropTypes.func.isRequired
   };
 
   componentDidMount() {
     this.props.fetchItems();
+    this.props.fetchItemTypes();
   }
 
   handlePaginateLink = (e, link) => {
@@ -44,7 +48,7 @@ class Items extends Component {
   }
 
   render() {
-    const { items, pager, isSuccess, isError } = this.props;
+    const { items, pager, isSuccess, isError, itemTypes } = this.props;
     
     return (
       <div className="animated fadeIn">
@@ -67,7 +71,10 @@ class Items extends Component {
 
                 <div className="form-group">
                   <select className="form-control">
-                    <option value=""></option>
+                    <option value="">-- กรุณาเลือก --</option>
+                    {itemTypes && itemTypes.map(type => (
+                      <option value={type.id} key={type.id}>{type.name}</option>
+                    ))}
                   </select>  
                 </div>
 
@@ -129,10 +136,14 @@ const mapStateToProps = state => ({
   items: state.item.items,
   pager: state.item.pager,
   isSuccess: state.item.success,
-  isError: state.item.errors
+  isError: state.item.errors,
+  itemTypes: state.itemType.itemTypes
 });
 
 export default connect(
   mapStateToProps,
-  { fetchItems }
+  {
+    fetchItems,
+    fetchItemTypes
+  }
 )(Items);
