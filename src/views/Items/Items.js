@@ -65,6 +65,12 @@ class Items extends Component {
                   <div className="sk-child sk-bounce3"></div>
                 </div>
 
+                <div className="form-group">
+                  <select className="form-control">
+                    <option value=""></option>
+                  </select>  
+                </div>
+
                 <Table responsive hover>
                   <thead>
                     <tr>
