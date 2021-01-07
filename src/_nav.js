@@ -30,12 +30,12 @@ export default {
       children: [
         {
           name: 'รายการเบิกวัสดุ',
-          url: '/base/breadcrumbs',
+          url: '/orders',
           icon: 'icon-puzzle',
         },
         {
           name: 'เบิกวัสดุ',
-          url: '/base/cards',
+          url: '/orders/new',
           icon: 'icon-puzzle',
         },
       ]

@@ -1,19 +1,17 @@
 import {
-  FETCH_BARTHELS_REQUEST,
-  FETCH_BARTHELS_SUCCESS,
-  FETCH_BARTHELS_FAILED,
-  ADD_BARTHELS_REQUEST,
-  ADD_BARTHELS_SUCCESS,
-  ADD_BARTHELS_FAILED,
-  SET_BARTHELS_PAGER
+  FETCH_ORDERS_REQUEST,
+  FETCH_ORDERS_FAILED,
+  FETCH_ORDERS_SUCCESS,
+  ADD_ORDERS_SUCCESS,
+  SET_ORDERS_PAGER
 } from './types';
 
 const initialState = {
   loading: false,
   errors: null,
   success: null,
-  barthels: [],
-  barthel: null,
+  orders: [],
+  order: null,
   pager: null
 };
 
@@ -21,31 +19,36 @@ export default function(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case FETCH_BARTHELS_REQUEST:
+    case FETCH_ORDERS_REQUEST:
       return {
         ...state,
         loading: true,
       };
-    case FETCH_BARTHELS_SUCCESS:
+    case FETCH_ORDERS_SUCCESS:
       return {
         ...state,
         loading: false,
-        barthels: payload,
+        orders: payload,
         errors: null
       };
-    case FETCH_BARTHELS_FAILED:
+    case SET_ORDERS_PAGER:
+      return {
+        ...state,
+        pager: payload
+      };
+    case FETCH_ORDERS_FAILED:
       return {
         ...state,
         loading: false,
-        barthels: [],
+        orders: [],
         errors: payload,
         success: null
       };
-    case ADD_BARTHELS_SUCCESS:
+    case ADD_ORDERS_SUCCESS:
       return {
         ...state,
         loading: false,
-        barthels: [...state.barthels, payload],
+        orders: [...state.orders, payload],
         errors: null
       };
     default: return state;
