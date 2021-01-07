@@ -37,8 +37,8 @@ const Widgets = React.lazy(() => import('./views/Widgets/Widgets'));
 const Users = React.lazy(() => import('./views/Users/Users'));
 const User = React.lazy(() => import('./views/Users/User'));
 
-const Items = React.lazy(() => import('./views/Items/Items'));
-const Item = React.lazy(() => import('./views/Items/Item'));
+const Items = React.lazy(() => import('./views/Items/List'));
+const Item = React.lazy(() => import('./views/Items/Detail'));
 const ItemNew = React.lazy(() => import('./views/Items/NewForm'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config

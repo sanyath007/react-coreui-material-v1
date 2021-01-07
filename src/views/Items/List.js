@@ -9,7 +9,7 @@ import { fetchItemTypes } from '../../redux/itemTypes';
 
 import Pagination from '../../components/Paginations/Pagination';
 
-class Items extends Component {
+class List extends Component {
   static propTypes = {
     items: PropTypes.array.isRequired,
     pager: PropTypes.object,
@@ -145,4 +145,4 @@ export default connect(
     fetchItems,
     fetchItemTypes
   }
-)(Items);
+)(List);

@@ -17,7 +17,7 @@ import {
 import ModalPatients from '../../components/Modals/ModalPatients';
 import { fetchBarthels } from '../../redux/barthel';
 
-class BarthelIndex extends Component {
+class List extends Component {
   constructor(props) {
     super(props);
 
@@ -333,4 +333,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { fetchBarthels }
-)(BarthelIndex);
+)(List);

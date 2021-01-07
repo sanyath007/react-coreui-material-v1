@@ -77,9 +77,8 @@ class NewForm extends Component {
   handleSubmit (event) {
     event.preventDefault();
 
-    console.log(this.state);
-    // this.props.onSubmit(this.state);
-    // this.setState(this.initialState);
+    this.props.onSubmit(this.state);
+    this.setState(this.initialState);
   }
 
   render () {
