@@ -37,9 +37,13 @@ const Widgets = React.lazy(() => import('./views/Widgets/Widgets'));
 const Users = React.lazy(() => import('./views/Users/Users'));
 const User = React.lazy(() => import('./views/Users/User'));
 
-const Items = React.lazy(() => import('./views/Items/List'));
-const Item = React.lazy(() => import('./views/Items/Detail'));
+const ItemList = React.lazy(() => import('./views/Items/List'));
+const ItemDetail = React.lazy(() => import('./views/Items/Detail'));
 const ItemNew = React.lazy(() => import('./views/Items/NewForm'));
+
+const OrdersList = React.lazy(() => import('./views/Orders/List'));
+// const OrdersDetail = React.lazy(() => import('./views/Items/Detail'));
+// const ItemNew = React.lazy(() => import('./views/Items/NewForm'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -85,9 +89,13 @@ const routes = [
   { path: '/users', exact: true,  name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
   /** Custom routes */
-  { path: '/Items', exact: true,  name: 'Items', component: Items },
-  { path: '/Items/new', exact: true, name: 'Add New Item', component: ItemNew },
-  { path: '/Items/view/:hn', exact: true, name: 'Item Details', component: Item },
+  { path: '/items', exact: true,  name: 'Items', component: ItemList },
+  { path: '/items/new', exact: true, name: 'Add New Item', component: ItemNew },
+  { path: '/items/view/:hn', exact: true, name: 'Item Details', component: ItemDetail },
+
+  { path: '/orders', exact: true,  name: 'Orders', component: OrderList },
+  // { path: '/orders/new', exact: true, name: 'Add New Item', component: OrderNew },
+  // { path: '/orders/view/:hn', exact: true, name: 'Item Details', component: OrderDetail },
 ];
 
 export default routes;
