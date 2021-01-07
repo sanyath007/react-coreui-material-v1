@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
   Badge,
@@ -26,35 +27,42 @@ import {
   Row,
 } from 'reactstrap';
 
+import { fetchUnits } from '../../redux/units';
+import { fetchItemTypes } from '../../redux/itemTypes';
+
 class NewForm extends Component {
   constructor (props) {
     super(props);
 
     this.initialState = {
-      pid: '',
-      hn: '',
-      cid: '',
-      pname: '',
-      fname: '',
-      lname: '',
-      birthdate: '',
-      age_y: 0,
-      sex: 1,
-      tel: '',
-      address: '',
-      moo: '',
-      road: '',
-      tambon: '',
-      amphur: '',
-      changwat: '',
-      zipcode: '',
-      latlong: ''
+      id: '',
+      name: '',
+      unit: '',
+      cost: 0.00,
+      stock: 0,
+      min: 0,
+      balance: 0,
+      item_type: '',
+      status: 0,
     }
 
     this.state = this.initialState;
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  static propTypes = {
+    units: PropTypes.array.isRequired,
+    isSuccess: PropTypes.object,
+    isError: PropTypes.any,
+    fetchUnits: PropTypes.func.isRequired,
+    fetchItemTypes: PropTypes.func.isRequired
+  };
+
+  componentDidMount() {
+    this.props.fetchUnits();
+    this.props.fetchItemTypes();
   }
 
   handleChange (event) {
@@ -64,16 +72,6 @@ class NewForm extends Component {
     this.setState({
       [name]: value
     });
-    
-    if (name === 'changwat') {
-      console.log(name + '=' + value);
-      this.props.onSelectedChangwat(value)
-    }
-    
-    if (name === 'amphur') {
-      console.log(name + '=' + value);
-      this.props.onSelectedAmphur(value)
-    }
   }
   
   handleSubmit (event) {
@@ -84,257 +82,143 @@ class NewForm extends Component {
   }
 
   render () {
-    let { changwats, amphurs, tambons } = this.props;
+    let { units, itemTypes } = this.props;
 
     return (
+
       <div className="animated fadeIn">
       <Row>
         <Col xs="12" md="12" sm="6">
           <Card>
             <CardHeader>
-              <strong>Patient</strong>
+              <strong>วัสดุ</strong>
               <small> Form</small>
             </CardHeader>
             <CardBody>
-              <Form onSubmit={this.handleSubmit}>
-                <Row form>
-                  <Col md="4" className="form-group">
-                    <label htmlFor="pid">PID</label>
+              <Form onSubmit={this.handleSubmit} encType="multipart/form-data" className="form-horizontal">
+                <FormGroup row>
+                  <Col md="3">
+                    <Label>ชื่อวัสดุ</Label>
+                  </Col>
+                  <Col xs="12" md="9">
                     <Input
-                      id="pid"
-                      name="pid"
+                      id="name"
+                      name="name"
                       type="text"
-                      value={this.state.pid}
+                      value={this.state.name}
                       onChange={this.handleChange}
-                      placeholder="PID"
+                      placeholder="ชื่อวัสดุ..."
                     />
                   </Col>
-                  <Col md="4">
-                    <label htmlFor="hn">HN</label>
-                    <Input
-                      id="hn"
-                      name="hn"
-                      type="text"
-                      value={this.state.hn}
-                      onChange={this.handleChange}
-                      placeholder="HN"
-                    />
+                </FormGroup>
+                <FormGroup row>
+                  <Col md="3">
+                    <Label>ประเภท</Label>
                   </Col>
-                  <Col md="4" className="form-group">
-                    <label htmlFor="cid">เลขบัตรประชาชน</label>
-                    <Input 
-                      id="cid"
-                      name="cid"
-                      type="text"
-                      value={this.state.cid}
-                      onChange={this.handleChange}
-                      placeholder="เลขบัตรประชาชน"
-                    />
-                  </Col>
-                </Row>
-
-                <Row form>
-                  <Col md="2" className="form-group">
-                    <label htmlFor="pname">คำนำหน้า</label>
+                  <Col xs="12" md="9">
                     <Input
-                      id="pname"
-                      name="pname"
-                      value={this.state.pname}
+                      type="select"
+                      id="item_type"
+                      name="item_type"
+                      value={this.state.item_type}
                       onChange={this.handleChange}
                     >
-                      <option value="">Choose...</option>
-                      <option value="ด.ช.">ด.ช.</option>
-                      <option value="ด.ญ.">ด.ญ.</option>
-                      <option value="นาย">นาย</option>
-                      <option value="นาง">นาง</option>
-                      <option value="นางสาว">นางสาว</option>
+                      <option value="">--กรุณาเลือก--</option>
+                      {itemTypes && itemTypes.map(itemType => (
+                        <option value={itemType.id} key={itemType.id}>{itemType.name}</option>
+                      ))}
                     </Input>
                   </Col>
-                  <Col md="5" className="form-group">
-                    <label htmlFor="fname">ชื่อ</label>
+                </FormGroup>
+
+                <FormGroup row>
+                  <Col md="3">
+                    <Label>หน่วย</Label>
+                  </Col>
+                  <Col xs="12" md="9">
                     <Input
-                      id="fname"
-                      name="fname"
+                      type="select"
+                      id="unit"
+                      name="unit"
+                      value={this.state.unit}
+                      onChange={this.handleChange}
+                    >
+                      <option value="">--กรุณาเลือก--</option>
+                      {units && units.map(unit => (
+                        <option value={unit.unit_id} key={unit.unit_id}>{unit.unit_name}</option>
+                      ))}
+                    </Input>
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Col md="3">
+                    <Label>ราคา</Label>
+                  </Col>
+                  <Col xs="12" md="9">
+                    <Input
+                      id="cost"
+                      name="cost"
                       type="text"
-                      value={this.state.fname}
+                      value={this.state.cost}
                       onChange={this.handleChange}
                       placeholder="ชื่อ"
                     />
                   </Col>
-                  <Col md="5">
-                    <label htmlFor="lname">สกุล</label>
-                    <Input
-                      id="lname"
-                      name="lname"
-                      type="text"
-                      value={this.state.lname}
-                      onChange={this.handleChange}
-                      placeholder="สกุล"
-                    />
-                  </Col>
-                </Row>
-
-                <Row form>
-                  <Col md="6" className="form-group">
-                    <label htmlFor="birthdate">วันเกิด</label>
-                    <Input
-                      id="birthdate"
-                      name="birthdate"
-                      type="text"
-                      value={this.state.birthdate}
-                      onChange={this.handleChange}
-                      placeholder="วันเกิด"
-                    />
-                  </Col>
-                  <Col md="3" className="form-group">
-                    <label htmlFor="age">อายุ</label>
-                    <Input
-                      id="age"
-                      name="age"
-                      type="text"
-                      value={this.state.age}
-                      onChange={this.handleChange}
-                      placeholder="อายุ"
-                    />
-                  </Col>
+                </FormGroup>
+                <FormGroup row>
                   <Col md="3">
-                    <label htmlFor="sex">เพศ</label>
-                    <Input type="select"
-                      id="sex"
-                      name="sex"
-                      value={this.state.sex}
-                      onChange={this.handleChange}
-                    >
-                      <option>Choose...</option>
-                      <option value="1">ชาย</option>
-                      <option value="2">หญิง</option>
-                    </Input>
+                    <Label>Stock</Label>
                   </Col>
-                </Row>
-
-                <FormGroup>
-                  <label htmlFor="address">ที่อยู่</label>
-                  <Input
-                    id="address"
-                    name="address"
-                    type="text"
-                    value={this.state.address}
-                    onChange={this.handleChange}
-                    placeholder="ที่อยู่"
-                  />
+                  <Col xs="12" md="9">
+                    <Input
+                      id="stock"
+                      name="stock"
+                      type="text"
+                      value={this.state.stock}
+                      onChange={this.handleChange}
+                      placeholder="Stock"
+                    />
+                  </Col>
                 </FormGroup>
 
-                <Row form>
-                  <Col md="10" className="form-group">
-                    <label htmlFor="road">ถนน</label>
+                <FormGroup row>
+                  <Col md="3">
+                    <Label>Min</Label>
+                  </Col>
+                  <Col xs="12" md="9">
                     <Input
-                      id="road"
-                      name="road"
+                      id="min"
+                      name="min"
                       type="text"
-                      value={this.state.road}
+                      value={this.state.min}
                       onChange={this.handleChange}
-                      placeholder="ถนน"
+                      placeholder="Min"
                     />
                   </Col>
-                  <Col md="2">
-                    <label htmlFor="moo">หมู่</label>
-                    <Input
-                      id="moo"
-                      name="moo"
-                      type="text"
-                      value={this.state.moo}
-                      onChange={this.handleChange}
-                      placeholder="หมู่"
-                      />
-                  </Col>
-                </Row>
+                </FormGroup>
 
-                <Row form>
-                  <Col md="4" className="form-group">
-                    <label htmlFor="changwat">จังหวัด</label>
-                    <Input type="select" 
-                      id="changwat"
-                      name="changwat"
-                      value={this.state.changwat}
-                      onChange={this.handleChange}
-                    >
-                      <option>Choose...</option>
-                      {changwats && changwats.map(chw => (
-                        <option key={chw.chw_id} value={chw.chw_id}>{chw.changwat}</option>
-                      ))}
-                    </Input>
+                <FormGroup row>
+                  <Col md="3">
+                    <Label>คงเหลือ</Label>
                   </Col>
-                  <Col md="4" className="form-group">
-                    <label htmlFor="amphur">อำเภอ</label>
-                    <Input type="select"
-                      id="amphur"
-                      name="amphur"
-                      value={this.state.amphur}
-                      onChange={this.handleChange}
-                    >
-                      <option>Choose...</option>
-                      {this.state.changwat && amphurs && amphurs.map(amp => (
-                        <option key={amp.id} value={amp.id}>{amp.amphur}</option>
-                      ))}
-                    </Input>
-                  </Col>
-                  <Col md="4" className="form-group">
-                    <label htmlFor="tambon">ตำบล</label>
-                    <Input type="select"
-                      id="tambon"
-                      name="tambon"
-                      value={this.state.tambon}
-                      onChange={this.handleChange}
-                    >
-                      <option>Choose...</option>
-                      {this.state.amphur && tambons && tambons.map(tam => (
-                        <option key={tam.id} value={tam.id}>{tam.tambon}</option>
-                      ))}
-                    </Input>
-                  </Col>
-                </Row>
-
-                <Row form>
-                  <Col md="2" className="form-group">
-                    <label htmlFor="zipcode">ไปรษณีย์</label>
+                  <Col xs="12" md="9">
                     <Input
-                      id="zipcode"
-                      name="zipcode"
+                      id="balance"
+                      name="balance"
                       type="text"
-                      value={this.state.zipcode}
+                      value={this.state.balance}
                       onChange={this.handleChange}
-                      placeholder="รหัสไปรษณีย์"
+                      placeholder="คงเหลือ"
                     />
                   </Col>
-                  <Col md="5" className="form-group">
-                    <label htmlFor="latlong">ละติจูด, ลองติจูด</label>
-                    <Input
-                      id="latlong"
-                      name="latlong"
-                      type="text"
-                      value={this.state.latlong}
-                      onChange={this.handleChange}
-                      data-toggle="modal" 
-                      data-target="#exampleModal"
-                      placeholder="ละติจูด, ลองติจูด"
-                    />
-                  </Col>
-                  <Col md="5" className="form-group">
-                    <label htmlFor="tel">โทรศัพท์</label>
-                    <Input
-                      id="tel"
-                      name="tel"
-                      type="text"
-                      value={this.state.tel}
-                      onChange={this.handleChange}
-                      placeholder="โทรศัพท์ติดต่อ"
-                    />
-                  </Col>
-                </Row>
-
-                <Button type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> เพิ่มผู้ป่วย</Button>
+                </FormGroup>
               </Form>
               </CardBody>
+              <CardFooter>
+                <Button type="submit" size="sm" color="primary">
+                  <i className="fa fa-dot-circle-o"></i> เพิ่มวัสดุ
+                </Button>
+              </CardFooter>
             </Card>
           </Col>
         </Row>
@@ -343,4 +227,12 @@ class NewForm extends Component {
   }
 }
 
-export default NewForm;
+const mapStateToProps = state => ({
+  units: state.unit.units,
+  itemTypes: state.itemType.itemTypes
+});
+
+export default connect(
+  mapStateToProps,
+  { fetchUnits, fetchItemTypes }
+)(NewForm);

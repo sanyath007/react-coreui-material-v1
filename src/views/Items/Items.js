@@ -141,8 +141,7 @@ const mapStateToProps = state => ({
 });
 
 export default connect(
-  mapStateToProps,
-  {
+  mapStateToProps, {
     fetchItems,
     fetchItemTypes
   }

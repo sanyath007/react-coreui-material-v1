@@ -12,7 +12,6 @@ export const fetchItemTypes = () => dispatch => {
 
   axios.get(`${url}/item-types`)
     .then(res => {
-      console.log(res);
       dispatch({
         type: FETCH_ITEM_TYPES_SUCCESS,
         payload: res.data

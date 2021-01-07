@@ -3,10 +3,12 @@ import thunk from 'redux-thunk';
 
 import itemReducer from './items/reducer';
 import itemTypeReducer from './itemTypes/reducer';
+import unitReducer from './units/reducer';
 
 const rootReducer = combineReducers({
   item: itemReducer,
   itemType: itemTypeReducer,
+  unit: unitReducer,
 })
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
