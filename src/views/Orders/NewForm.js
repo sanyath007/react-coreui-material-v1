@@ -25,55 +25,85 @@ import {
   InputGroupText,
   Label,
   Row,
+  Table
 } from 'reactstrap';
 
-import { fetchUnits } from '../../redux/units';
-import { fetchItemTypes } from '../../redux/itemTypes';
+import { fetchItems } from '../../redux/items';
 
 class NewForm extends Component {
   constructor (props) {
     super(props);
 
     this.initialState = {
-      id: '',
-      name: '',
-      unit: '',
-      cost: 0.00,
-      stock: 0,
-      min: 0,
-      balance: 0,
-      item_type: '',
-      status: 0,
+      order: {
+        id: '',
+        order_no: '',
+        order_date: '',
+        order_dept: '',
+        order_by: '',
+        order_reason: '',
+        remark: '',
+        status: 0,
+        items: []
+      },
+      newRow: {
+        no: 0,
+        item: null,
+        amount: 0,
+        total: 0.00
+      }
     }
 
     this.state = this.initialState;
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleCalTotal = this.handleCalTotal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   static propTypes = {
-    units: PropTypes.array.isRequired,
+    items: PropTypes.array.isRequired,
     isSuccess: PropTypes.object,
     isError: PropTypes.any,
-    fetchUnits: PropTypes.func.isRequired,
-    fetchItemTypes: PropTypes.func.isRequired
+    fetchItems: PropTypes.func.isRequired
   };
 
   componentDidMount() {
-    this.props.fetchUnits();
-    this.props.fetchItemTypes();
+    this.props.fetchItems();
   }
 
-  handleChange (event) {
-    const name = event.target.name;
-    const value = event.target.value;
+  handleChange = type => e => {
+    const name = e.target.name;
+    const value = e.target.value;
     
-    this.setState({
-      [name]: value
-    });
+    if (type === 'order') {
+      this.setState(prevState => ({
+        ...prevState,
+        order: {
+          ...prevState.order,
+          [name]: value
+        }
+      }));
+    } else {
+      this.setState(prevState => ({
+        ...prevState,
+        newRow: {
+          ...prevState.newRow,
+          [name]: value
+        }
+      }));
+    }
+
+    if (type !== 'order' && name === 'amount') {
+      this.handleCalTotal("test");
+    }
   }
   
+  handleCalTotal  = params => {
+    const { item } = this.state.newRow;
+    console.log(item.id);
+  }
+
   handleSubmit (event) {
     event.preventDefault();
 
@@ -81,8 +111,17 @@ class NewForm extends Component {
     this.setState(this.initialState);
   }
 
+  handleAddItem (e) {
+
+  }
+
+  handleRemoveItem (e) {
+
+  }
+
   render () {
-    let { units, itemTypes } = this.props;
+    let { items } = this.props;
+    let { order, newRow } = this.state;
 
     return (
 
@@ -96,123 +135,162 @@ class NewForm extends Component {
                   <small> Form</small>
                 </CardHeader>
                 <CardBody>              
-                  <FormGroup row>
-                    <Col md="3">
-                      <Label>ชื่อวัสดุ</Label>
+                  <FormGroup row className="my-0">
+                    <Col xs="6">
+                      <FormGroup>
+                        <Label htmlFor="order_no">เลขที่เบิก</Label>
+                        <Input
+                          type="text"
+                          id="order_no"
+                          name="order_no"
+                          value={order.order_no}
+                          placeholder="ระบุเลขที่เบิก"
+                          onChange={this.handleChange('order')}
+                        />
+                      </FormGroup>
                     </Col>
-                    <Col xs="12" md="9">
-                      <Input
-                        id="name"
-                        name="name"
-                        type="text"
-                        value={this.state.name}
-                        onChange={this.handleChange}
-                        placeholder="ชื่อวัสดุ..."
-                      />
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col md="3">
-                      <Label>ประเภท</Label>
-                    </Col>
-                    <Col xs="12" md="9">
-                      <Input
-                        type="select"
-                        id="item_type"
-                        name="item_type"
-                        value={this.state.item_type}
-                        onChange={this.handleChange}
-                      >
-                        <option value="">--กรุณาเลือก--</option>
-                        {itemTypes && itemTypes.map(itemType => (
-                          <option value={itemType.id} key={itemType.id}>{itemType.name}</option>
-                        ))}
-                      </Input>
+                    <Col xs="6">
+                      <FormGroup>
+                        <Label htmlFor="city">วันที่เบิก</Label>
+                        <Input
+                          type="date"
+                          id="order_date"
+                          name="order_date"
+                          value={order.order_date}
+                          placeholder="date"
+                          onChange={this.handleChange('order')}
+                        />
+                      </FormGroup>
                     </Col>
                   </FormGroup>
-                  <FormGroup row>
-                    <Col md="3">
-                      <Label>หน่วย</Label>
+                  <FormGroup row className="my-0">
+                    <Col xs="6">
+                      <FormGroup>
+                        <Label htmlFor="city">ผู้เบิก</Label>
+                        <Input
+                          type="text"
+                          id="order_by"
+                          name="order_by"
+                          value={order.order_by}
+                          placeholder="ระบุผู้เบิก"
+                          onChange={this.handleChange('order')}
+                        />
+                      </FormGroup>
                     </Col>
-                    <Col xs="12" md="9">
-                      <Input
-                        type="select"
-                        id="unit"
-                        name="unit"
-                        value={this.state.unit}
-                        onChange={this.handleChange}
-                      >
-                        <option value="">--กรุณาเลือก--</option>
-                        {units && units.map(unit => (
-                          <option value={unit.unit_id} key={unit.unit_id}>{unit.unit_name}</option>
-                        ))}
-                      </Input>
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col md="3">
-                      <Label>ราคา</Label>
-                    </Col>
-                    <Col xs="12" md="9">
-                      <Input
-                        id="cost"
-                        name="cost"
-                        type="text"
-                        value={this.state.cost}
-                        onChange={this.handleChange}
-                        placeholder="ชื่อ"
-                      />
+                    <Col xs="6">
+                      <FormGroup>
+                        <Label htmlFor="postal-code">หน่วยงาน</Label>
+                        <Input
+                          type="select"
+                          id="order_dept"
+                          name="order_dept"
+                          value={order.order_dept}
+                          onChange={this.handleChange('order')}
+                        >
+                          <option value="">--กรุณาเลือก--</option>
+                          {/* {itemTypes && itemTypes.map(itemType => (
+                            <option value={itemType.id} key={itemType.id}>{itemType.name}</option>
+                          ))} */}
+                        </Input>
+                      </FormGroup>
                     </Col>
                   </FormGroup>
-                  <FormGroup row>
-                    <Col md="3">
-                      <Label>Stock</Label>
+                  <FormGroup row className="my-0">
+                    <Col xs="6">
+                      <FormGroup>
+                        <Label htmlFor="city">เหตุผลในการเบิก</Label>
+                        <Input
+                          type="textarea"
+                          id="order_reason"
+                          name="order_reason"
+                          value={order.order_reason}
+                          rows="2"
+                          placeholder="เหตุผลในการเบิก..."
+                          onChange={this.handleChange('order')}
+                        />
+                      </FormGroup>
                     </Col>
-                    <Col xs="12" md="9">
-                      <Input
-                        id="stock"
-                        name="stock"
-                        type="text"
-                        value={this.state.stock}
-                        onChange={this.handleChange}
-                        placeholder="Stock"
-                      />
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col md="3">
-                      <Label>Min</Label>
-                    </Col>
-                    <Col xs="12" md="9">
-                      <Input
-                        id="min"
-                        name="min"
-                        type="text"
-                        value={this.state.min}
-                        onChange={this.handleChange}
-                        placeholder="Min"
-                      />
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col md="3">
-                      <Label>คงเหลือ</Label>
-                    </Col>
-                    <Col xs="12" md="9">
-                      <Input
-                        id="balance"
-                        name="balance"
-                        type="text"
-                        value={this.state.balance}
-                        onChange={this.handleChange}
-                        placeholder="คงเหลือ"
-                      />
+                    <Col xs="6">
+                      <FormGroup>
+                        <Label htmlFor="city">หมายเหตุ</Label>
+                        <Input
+                          type="textarea"
+                          id="remark"
+                          name="remark"
+                          value={order.remark}
+                          rows="2"
+                          placeholder="หมายเหตุ..."
+                          onChange={this.handleChange('order')}
+                        />
+                      </FormGroup>
                     </Col>
                   </FormGroup>
+
+                  <Table responsive hover>
+                    <thead>
+                      <tr>
+                        <th scope="col" style={{ width: '5%' }}>ลำดับ</th>
+                        <th scope="col">รายการวัสดุ</th>
+                        <th scope="col" style={{ width: '15%' }}>จำนวน</th>
+                        <th scope="col" style={{ width: '15%' }}>มูลค่า</th>
+                        <th scope="col" style={{ textAlign: 'center', width: '10%' }}>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {order.items && order.items.map(item => (
+                          <tr>
+                            <td></td>
+                          </tr>
+                      ))}
+
+                      <tr>
+                        <td></td>
+                        <td>
+                          <Input
+                            type="select"
+                            id="item"
+                            name="item"
+                            value={newRow.item}
+                            onChange={this.handleChange('newRow')}
+                          >
+                            <option value="">--กรุณาเลือก--</option>
+                            {items && items.map(item => (
+                              <option value={item.id} key={item.id}>{item.name}</option>
+                            ))}
+                          </Input>
+                        </td>
+                        <td>
+                          <Input
+                            type="text"
+                            id="amount"
+                            name="amount"
+                            value={newRow.amount}
+                            onChange={this.handleChange('newRow')}
+                            placeholder="ระบุจำนวน"
+                          />
+                        </td>
+                        <td>{newRow.total}</td>
+                        <td style={{ textAlign: "center" }}>
+                          <Button
+                            className="btn btn-success btn-sm mr-1"
+                            onClick={e => this.handleAddItem(e)}
+                          >
+                            Add
+                          </Button>
+                          <Button
+                            className="btn btn-danger btn-sm"
+                            onClick={e => this.handleRemoveItem(e)}
+                          >
+                            Remove
+                          </Button> 
+                        </td>
+                      </tr>
+                    </tbody>
+                  </Table>
                 </CardBody>
                 <CardFooter>
                   <Button type="submit" size="sm" color="primary">
-                    <i className="fa fa-dot-circle-o"></i> เพิ่มวัสดุ
+                    <i className="fa fa-dot-circle-o"></i> เพิ่มการเบิก
                   </Button>
                 </CardFooter>
               </Form>
@@ -225,11 +303,10 @@ class NewForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  units: state.unit.units,
-  itemTypes: state.itemType.itemTypes
+  items: state.item.items
 });
 
 export default connect(
   mapStateToProps,
-  { fetchUnits, fetchItemTypes }
+  { fetchItems }
 )(NewForm);

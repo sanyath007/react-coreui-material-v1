@@ -52,7 +52,7 @@ class List extends Component {
             <Card>
               <CardHeader>
                 <i className="fa fa-align-justify"></i> รายการเบิกวัสดุ <small className="text-muted">example</small>
-                <Link to="/items/new" className="btn btn-primary btn-sm float-right">
+                <Link to="/orders/new" className="btn btn-primary btn-sm float-right">
                   <i className="fa fa-user-plus"></i> เพิ่ม
                 </Link>
               </CardHeader>

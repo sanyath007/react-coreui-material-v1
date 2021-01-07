@@ -42,8 +42,8 @@ const ItemDetail = React.lazy(() => import('./views/Items/Detail'));
 const ItemNew = React.lazy(() => import('./views/Items/NewForm'));
 
 const OrderList = React.lazy(() => import('./views/Orders/List'));
-// const OrderDetail = React.lazy(() => import('./views/Items/Detail'));
-// const OrderNew = React.lazy(() => import('./views/Items/NewForm'));
+const OrderNew = React.lazy(() => import('./views/Orders/NewForm'));
+// const OrderDetail = React.lazy(() => import('./views/Orders/Detail'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -94,7 +94,7 @@ const routes = [
   { path: '/items/view/:hn', exact: true, name: 'Item Details', component: ItemDetail },
 
   { path: '/orders', exact: true,  name: 'Orders', component: OrderList },
-  // { path: '/orders/new', exact: true, name: 'Add New Item', component: OrderNew },
+  { path: '/orders/new', exact: true, name: 'Add New Order', component: OrderNew },
   // { path: '/orders/view/:hn', exact: true, name: 'Item Details', component: OrderDetail },
 ];
 
