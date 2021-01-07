@@ -12,8 +12,7 @@ export const fetchUnits = () => dispatch => {
   dispatch({ type: FETCH_UNITS_REQUEST });
 
   axios.get(`${url}/units`)
-    .then(res => {      
-      console.log(res);
+    .then(res => {
       dispatch({
         type: FETCH_UNITS_SUCCESS,
         payload: res.data

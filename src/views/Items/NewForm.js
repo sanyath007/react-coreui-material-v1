@@ -77,8 +77,9 @@ class NewForm extends Component {
   handleSubmit (event) {
     event.preventDefault();
 
-    this.props.onSubmit(this.state);
-    this.setState(this.initialState);
+    console.log(this.state);
+    // this.props.onSubmit(this.state);
+    // this.setState(this.initialState);
   }
 
   render () {
@@ -87,138 +88,135 @@ class NewForm extends Component {
     return (
 
       <div className="animated fadeIn">
-      <Row>
-        <Col xs="12" md="12" sm="6">
-          <Card>
-            <CardHeader>
-              <strong>วัสดุ</strong>
-              <small> Form</small>
-            </CardHeader>
-            <CardBody>
+        <Row>
+          <Col xs="12" md="12" sm="6">
+            <Card>
               <Form onSubmit={this.handleSubmit} encType="multipart/form-data" className="form-horizontal">
-                <FormGroup row>
-                  <Col md="3">
-                    <Label>ชื่อวัสดุ</Label>
-                  </Col>
-                  <Col xs="12" md="9">
-                    <Input
-                      id="name"
-                      name="name"
-                      type="text"
-                      value={this.state.name}
-                      onChange={this.handleChange}
-                      placeholder="ชื่อวัสดุ..."
-                    />
-                  </Col>
-                </FormGroup>
-                <FormGroup row>
-                  <Col md="3">
-                    <Label>ประเภท</Label>
-                  </Col>
-                  <Col xs="12" md="9">
-                    <Input
-                      type="select"
-                      id="item_type"
-                      name="item_type"
-                      value={this.state.item_type}
-                      onChange={this.handleChange}
-                    >
-                      <option value="">--กรุณาเลือก--</option>
-                      {itemTypes && itemTypes.map(itemType => (
-                        <option value={itemType.id} key={itemType.id}>{itemType.name}</option>
-                      ))}
-                    </Input>
-                  </Col>
-                </FormGroup>
-
-                <FormGroup row>
-                  <Col md="3">
-                    <Label>หน่วย</Label>
-                  </Col>
-                  <Col xs="12" md="9">
-                    <Input
-                      type="select"
-                      id="unit"
-                      name="unit"
-                      value={this.state.unit}
-                      onChange={this.handleChange}
-                    >
-                      <option value="">--กรุณาเลือก--</option>
-                      {units && units.map(unit => (
-                        <option value={unit.unit_id} key={unit.unit_id}>{unit.unit_name}</option>
-                      ))}
-                    </Input>
-                  </Col>
-                </FormGroup>
-                <FormGroup row>
-                  <Col md="3">
-                    <Label>ราคา</Label>
-                  </Col>
-                  <Col xs="12" md="9">
-                    <Input
-                      id="cost"
-                      name="cost"
-                      type="text"
-                      value={this.state.cost}
-                      onChange={this.handleChange}
-                      placeholder="ชื่อ"
-                    />
-                  </Col>
-                </FormGroup>
-                <FormGroup row>
-                  <Col md="3">
-                    <Label>Stock</Label>
-                  </Col>
-                  <Col xs="12" md="9">
-                    <Input
-                      id="stock"
-                      name="stock"
-                      type="text"
-                      value={this.state.stock}
-                      onChange={this.handleChange}
-                      placeholder="Stock"
-                    />
-                  </Col>
-                </FormGroup>
-
-                <FormGroup row>
-                  <Col md="3">
-                    <Label>Min</Label>
-                  </Col>
-                  <Col xs="12" md="9">
-                    <Input
-                      id="min"
-                      name="min"
-                      type="text"
-                      value={this.state.min}
-                      onChange={this.handleChange}
-                      placeholder="Min"
-                    />
-                  </Col>
-                </FormGroup>
-
-                <FormGroup row>
-                  <Col md="3">
-                    <Label>คงเหลือ</Label>
-                  </Col>
-                  <Col xs="12" md="9">
-                    <Input
-                      id="balance"
-                      name="balance"
-                      type="text"
-                      value={this.state.balance}
-                      onChange={this.handleChange}
-                      placeholder="คงเหลือ"
-                    />
-                  </Col>
-                </FormGroup>
+                <CardHeader>
+                  <strong>วัสดุ</strong>
+                  <small> Form</small>
+                </CardHeader>
+                <CardBody>              
+                  <FormGroup row>
+                    <Col md="3">
+                      <Label>ชื่อวัสดุ</Label>
+                    </Col>
+                    <Col xs="12" md="9">
+                      <Input
+                        id="name"
+                        name="name"
+                        type="text"
+                        value={this.state.name}
+                        onChange={this.handleChange}
+                        placeholder="ชื่อวัสดุ..."
+                      />
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row>
+                    <Col md="3">
+                      <Label>ประเภท</Label>
+                    </Col>
+                    <Col xs="12" md="9">
+                      <Input
+                        type="select"
+                        id="item_type"
+                        name="item_type"
+                        value={this.state.item_type}
+                        onChange={this.handleChange}
+                      >
+                        <option value="">--กรุณาเลือก--</option>
+                        {itemTypes && itemTypes.map(itemType => (
+                          <option value={itemType.id} key={itemType.id}>{itemType.name}</option>
+                        ))}
+                      </Input>
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row>
+                    <Col md="3">
+                      <Label>หน่วย</Label>
+                    </Col>
+                    <Col xs="12" md="9">
+                      <Input
+                        type="select"
+                        id="unit"
+                        name="unit"
+                        value={this.state.unit}
+                        onChange={this.handleChange}
+                      >
+                        <option value="">--กรุณาเลือก--</option>
+                        {units && units.map(unit => (
+                          <option value={unit.unit_id} key={unit.unit_id}>{unit.unit_name}</option>
+                        ))}
+                      </Input>
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row>
+                    <Col md="3">
+                      <Label>ราคา</Label>
+                    </Col>
+                    <Col xs="12" md="9">
+                      <Input
+                        id="cost"
+                        name="cost"
+                        type="text"
+                        value={this.state.cost}
+                        onChange={this.handleChange}
+                        placeholder="ชื่อ"
+                      />
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row>
+                    <Col md="3">
+                      <Label>Stock</Label>
+                    </Col>
+                    <Col xs="12" md="9">
+                      <Input
+                        id="stock"
+                        name="stock"
+                        type="text"
+                        value={this.state.stock}
+                        onChange={this.handleChange}
+                        placeholder="Stock"
+                      />
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row>
+                    <Col md="3">
+                      <Label>Min</Label>
+                    </Col>
+                    <Col xs="12" md="9">
+                      <Input
+                        id="min"
+                        name="min"
+                        type="text"
+                        value={this.state.min}
+                        onChange={this.handleChange}
+                        placeholder="Min"
+                      />
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row>
+                    <Col md="3">
+                      <Label>คงเหลือ</Label>
+                    </Col>
+                    <Col xs="12" md="9">
+                      <Input
+                        id="balance"
+                        name="balance"
+                        type="text"
+                        value={this.state.balance}
+                        onChange={this.handleChange}
+                        placeholder="คงเหลือ"
+                      />
+                    </Col>
+                  </FormGroup>
+                </CardBody>
+                <CardFooter>
+                  <Button type="submit" size="sm" color="primary">
+                    <i className="fa fa-dot-circle-o"></i> เพิ่มวัสดุ
+                  </Button>
+                </CardFooter>
               </Form>
-              </CardBody>
-              <CardFooter>
-                <Button type="submit" size="sm" color="primary">
-                  <i className="fa fa-dot-circle-o"></i> เพิ่มวัสดุ
-                </Button>
-              </CardFooter>
             </Card>
           </Col>
         </Row>
