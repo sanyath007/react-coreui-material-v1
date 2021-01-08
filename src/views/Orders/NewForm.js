@@ -28,7 +28,7 @@ import {
   Table
 } from 'reactstrap';
 
-import { fetchItems } from '../../redux/items';
+import { fetchItem, fetchItems } from '../../redux/items';
 
 class NewForm extends Component {
   constructor (props) {
@@ -46,9 +46,10 @@ class NewForm extends Component {
         status: 0,
         items: []
       },
-      newRow: {
+      newItem: {
         no: 0,
-        item: null,
+        item_id: '',
+        item: {},
         amount: 0,
         total: 0.00
       }
@@ -57,14 +58,16 @@ class NewForm extends Component {
     this.state = this.initialState;
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleCalTotal = this.handleCalTotal.bind(this);
+    this.handleCalcTotal = this.handleCalcTotal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   static propTypes = {
+    item: PropTypes.object,
     items: PropTypes.array.isRequired,
     isSuccess: PropTypes.object,
     isError: PropTypes.any,
+    fetchItem: PropTypes.func.isRequired,
     fetchItems: PropTypes.func.isRequired
   };
 
@@ -87,42 +90,72 @@ class NewForm extends Component {
     } else {
       this.setState(prevState => ({
         ...prevState,
-        newRow: {
-          ...prevState.newRow,
+        newItem: {
+          ...prevState.newItem,
           [name]: value
         }
       }));
     }
 
+    if (type !== 'order' && name === 'item_id') {
+      console.log("newItem.item_id was changed");
+      this.props.fetchItem(value);
+    }
+    
     if (type !== 'order' && name === 'amount') {
-      this.handleCalTotal("test");
+      console.log("newItem.amount was changed");
+      this.handleCalcTotal(value);
     }
   }
   
-  handleCalTotal  = params => {
-    const { item } = this.state.newRow;
-    console.log(item.id);
+  handleCalcTotal = amount => {
+    if (this.props.item) {
+      let total = parseFloat(parseFloat(this.props.item.cost) * amount);
+
+      this.setState(prevState => ({
+        ...prevState,
+        newItem: {
+          ...prevState.newItem,
+          item: this.props.item,
+          total: total
+        }
+      }));
+    }
   }
 
-  handleSubmit (event) {
-    event.preventDefault();
+  handleSubmit (e) {
+    e.preventDefault();
 
     this.props.onSubmit(this.state);
     this.setState(this.initialState);
   }
 
   handleAddItem (e) {
+    e.preventDefault();
 
+    this.setState(prevState => {
+      return {
+        ...prevState,
+        order: {
+          ...prevState.order,
+          items: [...prevState.order.items, this.state.newItem],
+        }
+      }
+    });
   }
 
-  handleRemoveItem (e) {
-
+  handleEditItem (e) {
+    e.preventDefault();
+  }
+  
+  handleDelItem (e) {
+    e.preventDefault();
   }
 
   render () {
     let { items } = this.props;
-    let { order, newRow } = this.state;
-
+    let { order, newItem } = this.state;
+    console.log(order.items);
     return (
 
       <div className="animated fadeIn">
@@ -151,7 +184,7 @@ class NewForm extends Component {
                     </Col>
                     <Col xs="6">
                       <FormGroup>
-                        <Label htmlFor="city">วันที่เบิก</Label>
+                        <Label htmlFor="order_date">วันที่เบิก</Label>
                         <Input
                           type="date"
                           id="order_date"
@@ -166,7 +199,7 @@ class NewForm extends Component {
                   <FormGroup row className="my-0">
                     <Col xs="6">
                       <FormGroup>
-                        <Label htmlFor="city">ผู้เบิก</Label>
+                        <Label htmlFor="order_by">ผู้เบิก</Label>
                         <Input
                           type="text"
                           id="order_by"
@@ -229,17 +262,34 @@ class NewForm extends Component {
                   <Table responsive hover>
                     <thead>
                       <tr>
-                        <th scope="col" style={{ width: '5%' }}>ลำดับ</th>
+                        <th scope="col" style={{ textAlign: 'center', width: '5%' }}>ลำดับ</th>
                         <th scope="col">รายการวัสดุ</th>
-                        <th scope="col" style={{ width: '15%' }}>จำนวน</th>
-                        <th scope="col" style={{ width: '15%' }}>มูลค่า</th>
+                        <th scope="col" style={{ textAlign: 'center', width: '15%' }}>จำนวน</th>
+                        <th scope="col" style={{ textAlign: 'center', width: '15%' }}>มูลค่า</th>
                         <th scope="col" style={{ textAlign: 'center', width: '10%' }}>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {order.items && order.items.map(item => (
-                          <tr>
-                            <td></td>
+                      {order.items && order.items.map((item, index) => (
+                          <tr key={item.item.id}>
+                            <td style={{ textAlign: 'center' }}>{index+1}</td>
+                            <td>{item.item.id+ '-' +item.item.name}</td>
+                            <td style={{ textAlign: 'center' }}>{item.amount}</td>
+                            <td style={{ textAlign: 'center' }}>{item.total}</td>
+                            <td style={{ textAlign: 'center' }}>
+                              <Button
+                                className="btn btn-warning btn-sm mr-1"
+                                onClick={e => this.handleEditItem(e)}
+                              >
+                                Edit
+                              </Button>
+                              <Button
+                                className="btn btn-danger btn-sm"
+                                onClick={e => this.handleRemoveItem(e)}
+                              >
+                                Del
+                              </Button> 
+                            </td>
                           </tr>
                       ))}
 
@@ -248,10 +298,10 @@ class NewForm extends Component {
                         <td>
                           <Input
                             type="select"
-                            id="item"
-                            name="item"
-                            value={newRow.item}
-                            onChange={this.handleChange('newRow')}
+                            id="item_id"
+                            name="item_id"
+                            value={newItem.item_id}
+                            onChange={this.handleChange('newItem')}
                           >
                             <option value="">--กรุณาเลือก--</option>
                             {items && items.map(item => (
@@ -259,17 +309,18 @@ class NewForm extends Component {
                             ))}
                           </Input>
                         </td>
-                        <td>
+                        <td style={{ textAlign: 'center' }}>
                           <Input
                             type="text"
                             id="amount"
                             name="amount"
-                            value={newRow.amount}
-                            onChange={this.handleChange('newRow')}
+                            value={newItem.amount}
+                            onChange={this.handleChange('newItem')}
                             placeholder="ระบุจำนวน"
+                            style={{ textAlign: 'center' }}
                           />
                         </td>
-                        <td>{newRow.total}</td>
+                        <td style={{ textAlign: 'center' }}>{newItem.total}</td>
                         <td style={{ textAlign: "center" }}>
                           <Button
                             className="btn btn-success btn-sm mr-1"
@@ -277,12 +328,6 @@ class NewForm extends Component {
                           >
                             Add
                           </Button>
-                          <Button
-                            className="btn btn-danger btn-sm"
-                            onClick={e => this.handleRemoveItem(e)}
-                          >
-                            Remove
-                          </Button> 
                         </td>
                       </tr>
                     </tbody>
@@ -303,10 +348,11 @@ class NewForm extends Component {
 }
 
 const mapStateToProps = state => ({
+  item: state.item.item,
   items: state.item.items
 });
 
 export default connect(
   mapStateToProps,
-  { fetchItems }
+  { fetchItem, fetchItems }
 )(NewForm);

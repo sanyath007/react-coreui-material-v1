@@ -1,12 +1,11 @@
 import axios from 'axios';
 import {
-  FETCH_ITEM_REQUEST,
+  ITEMS_REQUEST,
+  ITEMS_FAILED,
   FETCH_ITEM_SUCCESS,
-  FETCH_ITEM_FAILED,
-  ADD_ITEM_REQUEST,
-  ADD_ITEM_SUCCESS,
-  ADD_ITEM_FAILED,
+  FETCH_ITEMS_SUCCESS,
   SET_ITEMS_PAGER,
+  ADD_ITEM_SUCCESS,
   HIDE_ALERT
 } from './types';
 
@@ -16,29 +15,38 @@ export const fetchItems = link => dispatch => {
   let endpoint = link ? link : `${url}/items`;
   console.log(endpoint);
 
-  dispatch({ type: FETCH_ITEM_REQUEST });
+  dispatch({ type: ITEMS_REQUEST });
 
   axios.get(endpoint)
     .then(res => {
-      const { items, pager } = res.data;
-
-      dispatch({ type: FETCH_ITEM_SUCCESS, payload: items });
-      dispatch({ type: SET_ITEMS_PAGER, payload: pager });
+      dispatch({ type: FETCH_ITEMS_SUCCESS, payload: res.data.items });
+      dispatch({ type: SET_ITEMS_PAGER, payload: res.data.pager });
     })
     .catch(err => {
       dispatch({
-        type: FETCH_ITEM_FAILED,
+        type: ITEMS_FAILED,
         payload: err 
       })
     });
 }
 
-export const fetchItem = () => dispatch => {
+export const fetchItem = itemId => dispatch => {
+  dispatch({ type: ITEMS_REQUEST });
 
+  axios.get(`${url}/items/${itemId}`)
+    .then(res => {
+      dispatch({ type: FETCH_ITEM_SUCCESS, payload: res.data });
+    })
+    .catch(err => {
+      dispatch({
+        type: ITEMS_FAILED,
+        payload: err 
+      })
+    });
 }
 
 export const addItem = () => dispatch => {
-  dispatch({ type: ADD_ITEM_REQUEST });
+  dispatch({ type: ITEMS_REQUEST });
 
   let item = {};
 
@@ -52,7 +60,7 @@ export const addItem = () => dispatch => {
     dispatch(fetchItems());
   }).catch(err => {
     dispatch({
-      type: ADD_ITEM_FAILED,
+      type: ITEMS_FAILED,
       payload: err
     });
   })
