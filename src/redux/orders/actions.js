@@ -46,17 +46,17 @@ export const fetchOrder = pid => dispatch => {
 export const addOrder = data => dispatch => {
   dispatch({ type: ADD_ORDERS_REQUEST });
   console.log(data);
-  
-  // axios.post(`${url}/orders`, data)
-  //   .then(res => {
-  //     console.log(res.data);
-  //     dispatch({ type: ADD_ORDERS_SUCCESS, payload: res.data });
-  //   }).then(() => {
 
-  //   }).catch(err => {
-  //     console.log(err.response);
-  //     dispatch({ type: ADD_ORDERS_FAILED });
-  //   });
+  axios.post(`${url}/orders`, data)
+    .then(res => {
+      console.log(res.data);
+      dispatch({ type: ADD_ORDERS_SUCCESS, payload: res.data });
+    }).then(() => {
+
+    }).catch(err => {
+      console.log(err.response);
+      dispatch({ type: ADD_ORDERS_FAILED });
+    });
 }
 
 export const deleteOrder = data => dispatch => {

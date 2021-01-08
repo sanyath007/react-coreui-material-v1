@@ -5,9 +5,11 @@ import './polyfill'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
 
 import store from './redux/store';
 import './index.css';
+import 'react-toastify/dist/ReactToastify.min.css';
 import App from './App';
 
 import * as serviceWorker from './serviceWorker';
@@ -15,6 +17,7 @@ import * as serviceWorker from './serviceWorker';
 ReactDOM.render(
   <Provider store={store}>
     <App />
+    <ToastContainer autoClose={3000} />
   </Provider>, 
   document.getElementById('root')
 );

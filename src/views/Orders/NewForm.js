@@ -27,7 +27,7 @@ import {
   Row,
   Table
 } from 'reactstrap';
-// import { toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 import { addOrder } from '../../redux/orders';
 import { fetchItem, fetchItems } from '../../redux/items';
@@ -40,7 +40,7 @@ class NewForm extends Component {
     this.initialState = {
       order: {
         id: '',
-        order_no: '',
+        order_no: '640000',
         order_date: '',
         order_dept: '',
         order_by: '1300200009261',
@@ -105,12 +105,10 @@ class NewForm extends Component {
     }
 
     if (type !== 'order' && name === 'item_id') {
-      console.log("newItem.item_id was changed");
       this.props.fetchItem(value);
     }
     
     if (type !== 'order' && name === 'amount') {
-      console.log("newItem.amount was changed");
       this.handleCalcTotal(value);
     }
   }
@@ -123,6 +121,7 @@ class NewForm extends Component {
         ...prevState,
         newItem: {
           ...prevState.newItem,
+          no: prevState.order.items.length + 1,
           item: this.props.item,
           total: total
         }
@@ -140,10 +139,10 @@ class NewForm extends Component {
     if (order.items.length > 0) {
       this.props.addOrder(order);
 
-      this.setState(this.initialState);
+      // this.setState(this.initialState);
     } else {
-      alert('Error: You not have items in order data');
-      // toast.error('Error: You not have items in order data');
+      // alert('Error: You not have items in order data');
+      toast.error('Error: You not have items in order data');
     }
   }
 
