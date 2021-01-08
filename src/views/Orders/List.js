@@ -76,24 +76,24 @@ class List extends Component {
                 <Table responsive hover>
                   <thead>
                     <tr>
-                      <th scope="col" style={{ width: '5%' }}>รหัส</th>
-                      <th scope="col" style={{ width: '10%' }}>เลขที่เบิก</th>
-                      <th scope="col">รายการวัสดุ</th>
-                      <th scope="col" style={{ width: '10%' }}>วันที่</th>
-                      <th scope="col" style={{ width: '8%' }}>เวลา</th>
-                      <th scope="col" style={{ width: '8%' }}>จน.ที่เบิก</th>
+                      <th scope="col" style={{ textAlign: 'center', width: '5%' }}>รหัส</th>
+                      <th scope="col" style={{ textAlign: 'center', width: '10%' }}>เลขที่เบิก</th>
+                      <th scope="col">หน่วยงาน</th>
+                      <th scope="col" style={{ textAlign: 'center', width: '10%' }}>วันที่</th>
+                      <th scope="col" style={{ textAlign: 'center', width: '8%' }}>จน.ที่เบิก</th>
+                      <th scope="col" style={{ textAlign: 'center', width: '8%' }}>สถานะ</th>
                       <th scope="col" style={{ textAlign: 'center', width: '10%' }}>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     { orders && orders.map(order => (
                       <tr key={order.id}>
-                        <td>{ order.id }</td>
-                        <td>{ order.order_no }</td>
-                        <td>{ order.order_date }</td>
-                        <td>{ order.order_date }</td>
-                        <td>{ order.cost }</td>
-                        <td>{ order.balance }</td>
+                        <td style={{ textAlign: 'center' }}>{ order.id }</td>
+                        <td style={{ textAlign: 'center' }}>{ order.order_no }</td>
+                        <td>{ order.dept.depart_id+ '-' +order.dept.depart_name }</td>
+                        <td style={{ textAlign: 'center' }}>{ order.order_date }</td>
+                        <td style={{ textAlign: 'center' }}>{ order.order_item.length }</td>
+                        <td style={{ textAlign: 'center' }}>{ order.cost }</td>
                         <td style={{ textAlign: "center" }}>
                           <Link
                             to={`/orders/edit/${order.id}`}
