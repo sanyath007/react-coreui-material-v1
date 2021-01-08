@@ -1,20 +1,20 @@
 import {
-  FETCH_VISITIONS_REQUEST,
-  FETCH_VISITIONS_SUCCESS,
-  FETCH_VISITIONS_FAILED,
-  FETCH_VISITION_REQUEST,
-  FETCH_VISITION_SUCCESS,
-  FETCH_VISITION_FAILED,
-  ADD_VISITION_REQUEST,
-  ADD_VISITION_SUCCESS,
-  ADD_VISITION_FAILED,
-  UPDATE_VISITION_REQUEST,
-  UPDATE_VISITION_SUCCESS,
-  UPDATE_VISITION_FAILED,
-  DELETE_VISITION_REQUEST,
-  DELETE_VISITION_SUCCESS,
-  DELETE_VISITION_FAILED,
-  SET_VISITIONS_PAGER,
+  FETCH_PERSONS_REQUEST,
+  FETCH_PERSONS_SUCCESS,
+  FETCH_PERSONS_FAILED,
+  FETCH_PERSON_REQUEST,
+  FETCH_PERSON_SUCCESS,
+  FETCH_PERSON_FAILED,
+  ADD_PERSONS_REQUEST,
+  ADD_PERSONS_SUCCESS,
+  ADD_PERSONS_FAILED,
+  UPDATE_PERSONS_REQUEST,
+  UPDATE_PERSONS_SUCCESS,
+  UPDATE_PERSONS_FAILED,
+  DELETE_PERSONS_REQUEST,
+  DELETE_PERSONS_SUCCESS,
+  DELETE_PERSONS_FAILED,
+  SET_PERSONS_PAGER,
   HIDE_ALERT
 } from './types';
 
@@ -22,8 +22,8 @@ const initialState = {
   loading: false,
   errors: null,
   success: null,
-  visitions: [],
-  visition: {},
+  persons: [],
+  person: {},
   pager: null
 };
 
@@ -31,124 +31,144 @@ export default function(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case FETCH_VISITIONS_REQUEST:
+    case FETCH_PERSONS_REQUEST:
       return {
         ...state,
         loading: true,
       };
-        case FETCH_VISITIONS_SUCCESS:
+        case FETCH_PERSONS_SUCCESS:
       return {
         ...state,
         loading: false,
-        visitions: payload,
+        persons: payload,
         errors: null
       };
-    case FETCH_VISITIONS_FAILED:
+    case FETCH_PERSONS_FAILED:
       return {
         ...state,
         loading: false,
-        visitions: [],
+        persons: [],
         errors: payload,
         success: null
       };
-    case SET_VISITIONS_PAGER:
+    case SET_PERSONS_PAGER:
       return {
         ...state,
         pager: payload
       };
-    case ADD_VISITION_REQUEST:
+    case FETCH_PERSON_REQUEST:
       return {
         ...state,
         loading: true,
       };
-    case ADD_VISITION_SUCCESS:
+        case FETCH_PERSON_SUCCESS:
       return {
         ...state,
         loading: false,
-        visitions: [...state.visitions, payload],
+        person: payload,
         errors: null
       };
-    case ADD_VISITION_FAILED:
+    case FETCH_PERSON_FAILED:
       return {
         ...state,
         loading: false,
-        visition: {},
+        person: null,
         errors: payload,
         success: null
       };
-    case FETCH_VISITION_REQUEST:
+    case ADD_PERSONS_REQUEST:
       return {
         ...state,
         loading: true,
       };
-    case FETCH_VISITION_SUCCESS:
+    case ADD_PERSONS_SUCCESS:
       return {
         ...state,
         loading: false,
-        visition: payload,
+        persons: [...state.persons, payload],
         errors: null
       };
-    case FETCH_VISITION_FAILED:
+    case ADD_PERSONS_FAILED:
       return {
         ...state,
         loading: false,
-        visition: {},
+        person: {},
         errors: payload,
         success: null
       };
-    case UPDATE_VISITION_REQUEST:
+    case FETCH_PERSON_REQUEST:
       return {
         ...state,
         loading: true,
       };
-    case UPDATE_VISITION_SUCCESS:
-      let updatedData = state.visitions.map(visition => {
-        if(visition.id === payload.id) {
-          return payload.visition;
+    case FETCH_PERSON_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        person: payload,
+        errors: null
+      };
+    case FETCH_PERSON_FAILED:
+      return {
+        ...state,
+        loading: false,
+        person: {},
+        errors: payload,
+        success: null
+      };
+    case UPDATE_PERSONS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case UPDATE_PERSONS_SUCCESS:
+      let updatedData = state.persons.map(person => {
+        if(person.person_id === payload.id) {
+          return payload.person;
         } else {
-          return visition;
+          return person;
         }
       });
 
       return {
         ...state,
         loading: false,
-        visitions: updatedData,
+        persons: updatedData,
         errors: null,
         success: {
           status: true,
           message: 'Updated Successful !!'
         }
       };
-    case UPDATE_VISITION_FAILED:
+    case UPDATE_PERSONS_FAILED:
       return {
         ...state,
         loading: false,
-        visitions: [],
+        persons: [],
         errors: payload,
         success: null
       };
-    case DELETE_VISITION_REQUEST:
+    case DELETE_PERSONS_REQUEST:
       return {
         ...state,
         loading: true,
       };
-    case DELETE_VISITION_SUCCESS:
+    case DELETE_PERSONS_SUCCESS:
       return {
         ...state,
         loading: false,
-        visitions: state.visitions.filter(visition => visition.id !== payload),
+        persons: state.persons.filter(person => person.person_id !== payload),
         errors: null,
         success: {
           status: true,
           message: 'Deleted Successful !!'
         }
       };
-    case DELETE_VISITION_FAILED:
+    case DELETE_PERSONS_FAILED:
       return {
         ...state,
         loading: false,
-        visitions: [],
+        persons: [],
         errors: payload,
         success: null
       };

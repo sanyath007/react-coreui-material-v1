@@ -5,12 +5,16 @@ import itemReducer from './items/reducer';
 import orderReducer from './orders/reducer';
 import itemTypeReducer from './itemTypes/reducer';
 import unitReducer from './units/reducer';
+import personReducer from './persons/reducer';
+import deptReducer from './depts/reducer';
 
 const rootReducer = combineReducers({
   item: itemReducer,
   order: orderReducer,
   itemType: itemTypeReducer,
   unit: unitReducer,
+  person: personReducer,
+  dept: deptReducer,
 })
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
