@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import {
   FETCH_DEPTS_REQUEST,
   FETCH_DEPTS_SUCCESS,

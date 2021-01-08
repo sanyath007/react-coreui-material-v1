@@ -29,6 +29,7 @@ import {
 } from 'reactstrap';
 
 import { fetchItem, fetchItems } from '../../redux/items';
+import { fetchDepts } from '../../redux/depts';
 
 class NewForm extends Component {
   constructor (props) {
@@ -68,11 +69,13 @@ class NewForm extends Component {
     isSuccess: PropTypes.object,
     isError: PropTypes.any,
     fetchItem: PropTypes.func.isRequired,
-    fetchItems: PropTypes.func.isRequired
+    fetchItems: PropTypes.func.isRequired,
+    fetchDepts: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
     this.props.fetchItems();
+    this.props.fetchDepts();
   }
 
   handleChange = type => e => {
@@ -349,10 +352,11 @@ class NewForm extends Component {
 
 const mapStateToProps = state => ({
   item: state.item.item,
-  items: state.item.items
+  items: state.item.items,
+  depts: state.dept.depts,
 });
 
 export default connect(
   mapStateToProps,
-  { fetchItem, fetchItems }
+  { fetchItem, fetchItems, fetchDepts }
 )(NewForm);

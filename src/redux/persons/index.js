@@ -1,4 +1,5 @@
 export {
+  fetchPersonsWithPagination,
   fetchPersons,
   fetchPerson,
   addPerson,

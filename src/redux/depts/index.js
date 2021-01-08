@@ -1,4 +1,5 @@
 export {
+  fetchDeptsWithPagination,
   fetchDepts,
   fetchDept,
   addDept,
