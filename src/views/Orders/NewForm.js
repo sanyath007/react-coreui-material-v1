@@ -27,7 +27,9 @@ import {
   Row,
   Table
 } from 'reactstrap';
+// import { toast } from 'react-toastify';
 
+import { addOrder } from '../../redux/orders';
 import { fetchItem, fetchItems } from '../../redux/items';
 import { fetchDepts } from '../../redux/depts';
 
@@ -41,7 +43,7 @@ class NewForm extends Component {
         order_no: '',
         order_date: '',
         order_dept: '',
-        order_by: '',
+        order_by: '1300200009261',
         order_reason: '',
         remark: '',
         status: 0,
@@ -64,13 +66,15 @@ class NewForm extends Component {
   }
 
   static propTypes = {
+    isError: PropTypes.any,
+    isSuccess: PropTypes.object,
     item: PropTypes.object,
     items: PropTypes.array.isRequired,
-    isSuccess: PropTypes.object,
-    isError: PropTypes.any,
+    depts: PropTypes.array.isRequired,
     fetchItem: PropTypes.func.isRequired,
     fetchItems: PropTypes.func.isRequired,
     fetchDepts: PropTypes.func.isRequired,
+    addOrder: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
@@ -129,8 +133,18 @@ class NewForm extends Component {
   handleSubmit (e) {
     e.preventDefault();
 
-    this.props.onSubmit(this.state);
-    this.setState(this.initialState);
+    let { order } = this.state;
+
+    //TODO: validate data before add data to db
+
+    if (order.items.length > 0) {
+      this.props.addOrder(order);
+
+      this.setState(this.initialState);
+    } else {
+      alert('Error: You not have items in order data');
+      // toast.error('Error: You not have items in order data');
+    }
   }
 
   handleAddItem (e) {
@@ -145,6 +159,16 @@ class NewForm extends Component {
         }
       }
     });
+
+    /** Set state to initialState */
+    this.setState(prevState => {
+      return {
+        ...prevState,
+        newItem: {
+          ...this.initialState.newItem
+        }
+      }
+    });
   }
 
   handleEditItem (e) {
@@ -156,9 +180,9 @@ class NewForm extends Component {
   }
 
   render () {
-    let { items } = this.props;
+    let { items, depts } = this.props;
     let { order, newItem } = this.state;
-    console.log(order.items);
+
     return (
 
       <div className="animated fadeIn">
@@ -224,9 +248,9 @@ class NewForm extends Component {
                           onChange={this.handleChange('order')}
                         >
                           <option value="">--กรุณาเลือก--</option>
-                          {/* {itemTypes && itemTypes.map(itemType => (
-                            <option value={itemType.id} key={itemType.id}>{itemType.name}</option>
-                          ))} */}
+                          {depts && depts.map(dept => (
+                            <option value={dept.depart_id} key={dept.depart_id}>{dept.depart_name}</option>
+                          ))}
                         </Input>
                       </FormGroup>
                     </Col>
@@ -248,7 +272,7 @@ class NewForm extends Component {
                     </Col>
                     <Col xs="6">
                       <FormGroup>
-                        <Label htmlFor="city">หมายเหตุ</Label>
+                        <Label htmlFor="city">เพิ่มเติม</Label>
                         <Input
                           type="textarea"
                           id="remark"
@@ -358,5 +382,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchItem, fetchItems, fetchDepts }
+  { fetchItem, fetchItems, fetchDepts, addOrder }
 )(NewForm);

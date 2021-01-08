@@ -44,9 +44,8 @@ export const fetchDepts = () => dispatch => {
   dispatch({ type: FETCH_DEPTS_REQUEST });
   
   axios.get(`${url}/depts`)
-  .then(res => {
-    console.log(res.data);    
-    dispatch({ type: FETCH_DEPTS_SUCCESS, payload: res.data.items }); 
+  .then(res => {   
+    dispatch({ type: FETCH_DEPTS_SUCCESS, payload: res.data }); 
   })
   .catch(err => {
     // toast.error('Error !!');
