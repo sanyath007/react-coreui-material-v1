@@ -2,6 +2,9 @@ import {
   FETCH_ORDERS_REQUEST,
   FETCH_ORDERS_FAILED,
   FETCH_ORDERS_SUCCESS,
+  FETCH_LASTORDERNO_SUCCESS,
+  ADD_ORDERS_REQUEST,
+  ADD_ORDERS_FAILED,
   ADD_ORDERS_SUCCESS,
   SET_ORDERS_PAGER
 } from './types';
@@ -12,6 +15,7 @@ const initialState = {
   success: null,
   orders: [],
   order: null,
+  lastOrderNo: '',
   pager: null
 };
 
@@ -23,6 +27,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loading: true,
+      };
+    case FETCH_LASTORDERNO_SUCCESS:
+      return {
+        ...state,
+        lastOrderNo: payload,
       };
     case FETCH_ORDERS_SUCCESS:
       return {

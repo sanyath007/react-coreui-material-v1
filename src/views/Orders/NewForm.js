@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
@@ -29,7 +29,7 @@ import {
 } from 'reactstrap';
 import { toast } from 'react-toastify';
 
-import { addOrder } from '../../redux/orders';
+import { fetchLastOrderNo, addOrder } from '../../redux/orders';
 import { fetchItem, fetchItems } from '../../redux/items';
 import { fetchDepts } from '../../redux/depts';
 
@@ -40,7 +40,7 @@ class NewForm extends Component {
     this.initialState = {
       order: {
         id: '',
-        order_no: '640000',
+        order_no: '',
         order_date: '',
         order_dept: '',
         order_by: '1300200009261',
@@ -63,6 +63,7 @@ class NewForm extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleCalcTotal = this.handleCalcTotal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.order_no = createRef();
   }
 
   static propTypes = {
@@ -70,16 +71,19 @@ class NewForm extends Component {
     isSuccess: PropTypes.object,
     item: PropTypes.object,
     items: PropTypes.array.isRequired,
+    lastOrderNo: PropTypes.string.isRequired,
     depts: PropTypes.array.isRequired,
     fetchItem: PropTypes.func.isRequired,
     fetchItems: PropTypes.func.isRequired,
     fetchDepts: PropTypes.func.isRequired,
+    fetchLastOrderNo: PropTypes.func.isRequired,
     addOrder: PropTypes.func.isRequired,
   };
-
+  
   componentDidMount() {
     this.props.fetchItems();
     this.props.fetchDepts();
+    this.props.fetchLastOrderNo();
   }
 
   handleChange = type => e => {
@@ -134,6 +138,8 @@ class NewForm extends Component {
 
     let { order } = this.state;
 
+    order.order_no = this.order_no.current.props.defaultValue;
+    console.log(order);
     //TODO: validate data before add data to db
 
     if (order.items.length > 0) {
@@ -141,7 +147,6 @@ class NewForm extends Component {
 
       // this.setState(this.initialState);
     } else {
-      // alert('Error: You not have items in order data');
       toast.error('Error: You not have items in order data');
     }
   }
@@ -149,25 +154,29 @@ class NewForm extends Component {
   handleAddItem (e) {
     e.preventDefault();
 
-    this.setState(prevState => {
-      return {
-        ...prevState,
-        order: {
-          ...prevState.order,
-          items: [...prevState.order.items, this.state.newItem],
+    if(this.state.newItem.item_id && this.state.newItem.amount !== 0) {
+      this.setState(prevState => {
+        return {
+          ...prevState,
+          order: {
+            ...prevState.order,
+            items: [...prevState.order.items, this.state.newItem],
+          }
         }
-      }
-    });
-
-    /** Set state to initialState */
-    this.setState(prevState => {
-      return {
-        ...prevState,
-        newItem: {
-          ...this.initialState.newItem
+      });
+  
+      /** Set state to initialState */
+      this.setState(prevState => {
+        return {
+          ...prevState,
+          newItem: {
+            ...this.initialState.newItem
+          }
         }
-      }
-    });
+      });
+    } else {
+      toast.error('Error: You have not selected item yet or amount value equal 0')
+    }
   }
 
   handleEditItem (e) {
@@ -179,7 +188,7 @@ class NewForm extends Component {
   }
 
   render () {
-    let { items, depts } = this.props;
+    let { items, depts, lastOrderNo } = this.props;
     let { order, newItem } = this.state;
 
     return (
@@ -190,7 +199,7 @@ class NewForm extends Component {
             <Card>
               <Form onSubmit={this.handleSubmit} encType="multipart/form-data" className="form-horizontal">
                 <CardHeader>
-                  <strong>วัสดุ</strong>
+                  <strong>เบิกวัสดุ</strong>
                   <small> Form</small>
                 </CardHeader>
                 <CardBody>              
@@ -202,9 +211,12 @@ class NewForm extends Component {
                           type="text"
                           id="order_no"
                           name="order_no"
-                          value={order.order_no}
+                          ref={this.order_no}
+                          defaultValue={lastOrderNo}
+                          // value={order.order_no}
                           placeholder="ระบุเลขที่เบิก"
-                          onChange={this.handleChange('order')}
+                          readOnly
+                          // onChange={this.handleChange('order')}
                         />
                       </FormGroup>
                     </Col>
@@ -377,9 +389,10 @@ const mapStateToProps = state => ({
   item: state.item.item,
   items: state.item.items,
   depts: state.dept.depts,
+  lastOrderNo: state.order.lastOrderNo,
 });
 
 export default connect(
   mapStateToProps,
-  { fetchItem, fetchItems, fetchDepts, addOrder }
+  { fetchItem, fetchItems, fetchDepts, fetchLastOrderNo, addOrder }
 )(NewForm);

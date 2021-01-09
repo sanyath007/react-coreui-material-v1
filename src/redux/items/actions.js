@@ -13,7 +13,6 @@ const url = 'http://localhost/public_html/slim3-material-api/public';
 
 export const fetchItems = link => dispatch => {
   let endpoint = link ? link : `${url}/items`;
-  console.log(endpoint);
 
   dispatch({ type: ITEMS_REQUEST });
 

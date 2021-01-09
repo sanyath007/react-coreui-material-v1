@@ -1,4 +1,5 @@
 export {
+  fetchLastOrderNo,
   fetchOrders,
   addOrder,
   deleteOrder
