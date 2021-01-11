@@ -95,6 +95,7 @@ class List extends Component {
                       <th scope="col" style={{ width: '8%' }}>หน่วย</th>
                       <th scope="col" style={{ width: '8%' }}>ราคา</th>
                       <th scope="col" style={{ width: '8%' }}>คงเหลือ</th>
+                      <th scope="col" style={{ width: '15%' }}>กลุ่ม</th>
                       <th scope="col" style={{ width: '15%' }}>ประเภท</th>
                       <th scope="col" style={{ textAlign: 'center', width: '10%' }}>Actions</th>
                     </tr>
@@ -107,6 +108,7 @@ class List extends Component {
                         <td>{ item.unit }</td>
                         <td>{ item.cost }</td>
                         <td>{ item.balance }</td>
+                        <td>{ item.item_group.group_name }</td>
                         <td>{ item.item_type.name }</td>
                         <td style={{ textAlign: "center" }}>
                           <Link
