@@ -50,12 +50,17 @@ export default {
     },
     {
       name: 'ประเภทวัสดุ',
-      url: '/theme/typography',
+      url: '/item-types',
+      icon: 'icon-pencil',
+    },
+    {
+      name: 'กลุ่มวัสดุ',
+      url: '/item-groups',
       icon: 'icon-pencil',
     },
     {
       name: 'หน่วยนับ',
-      url: '/theme/typography',
+      url: '/units',
       icon: 'icon-pencil',
     },
     {
