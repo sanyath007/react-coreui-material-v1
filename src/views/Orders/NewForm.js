@@ -155,6 +155,13 @@ class NewForm extends Component {
     e.preventDefault();
 
     if(this.state.newItem.item_id && this.state.newItem.amount !== 0) {
+      const { items } = this.state.order;
+      /** Check have exist item  */
+      if (items.find(item => parseInt(item.item_id) === parseInt(this.state.newItem.item_id))) {
+        toast.error('Error: This item is exists!!');
+        return false;
+      }
+
       this.setState(prevState => {
         return {
           ...prevState,
@@ -181,6 +188,8 @@ class NewForm extends Component {
 
   handleEditItem = editId => e => {
     e.preventDefault();
+
+    console.log(editId);
   }
   
   handleDeleteItem = deleteId => e => {
