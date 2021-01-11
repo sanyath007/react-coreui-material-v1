@@ -30,7 +30,6 @@ export const fetchItemGroups = () => dispatch => {
 
   axios.get(`${url}/item-groups`)
     .then(res => {
-      console.log(res);
       dispatch({ type: FETCH_ITEM_GROUPS_SUCCESS, payload: res.data.groups });
     })
     .catch(err => {

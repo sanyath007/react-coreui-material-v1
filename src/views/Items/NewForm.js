@@ -97,9 +97,11 @@ class NewForm extends Component {
   handleSubmit (event) {
     event.preventDefault();
     const { ...newItem } = this.state;
-    console.log(newItem);
-    // this.props.addItem(newItem);
-    // this.setState(this.initialState);
+
+    //TODO: To validate new item data
+
+    this.props.addItem(newItem);
+    this.setState(this.initialState);
   }
 
   render () {

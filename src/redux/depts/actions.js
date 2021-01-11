@@ -84,7 +84,7 @@ export const addDept = data => dispatch => {
   }).then(() => {
     dispatch(fetchDepts());
   }).catch(err => {
-    // toast.error('Error !!');    
+    // toast.error('Error !!');
     dispatch({ type: ADD_DEPTS_FAILED, payload: err });
   })
 }
