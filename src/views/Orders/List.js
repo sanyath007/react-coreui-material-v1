@@ -2,8 +2,15 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
-
+import {
+  Badge,
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  Row,
+  Table
+} from 'reactstrap';
 import { fetchOrders } from '../../redux/orders';
 import Pagination from '../../components/Paginations/Pagination';
 
@@ -129,9 +136,9 @@ class List extends Component {
 
 const mapStateToProps = state => ({
   orders: state.order.orders,
-  pager: state.item.pager,
-  isSuccess: state.item.success,
-  isError: state.item.errors
+  pager: state.order.pager,
+  isSuccess: state.order.success,
+  isError: state.order.errors
 });
 
 export default connect(
