@@ -179,12 +179,25 @@ class NewForm extends Component {
     }
   }
 
-  handleEditItem (e) {
+  handleEditItem = editId => e => {
     e.preventDefault();
   }
   
-  handleDelItem (e) {
+  handleDeleteItem = deleteId => e => {
     e.preventDefault();
+
+    if (window.confirm("คุณแน่ใจว่าต้องการลบรายการนี้ใช่หรือไม่")) {
+      const { items } = this.state.order;    
+      let newOrderItems = items.filter(item => parseInt(item.item_id) !== deleteId);
+      
+      this.setState(prevState => ({
+        ...prevState,
+        order: {
+          ...prevState.order,
+          items: newOrderItems
+        }
+      }));
+    }
   }
 
   render () {
@@ -317,13 +330,13 @@ class NewForm extends Component {
                             <td style={{ textAlign: 'center' }}>
                               <Button
                                 className="btn btn-warning btn-sm mr-1"
-                                onClick={e => this.handleEditItem(e)}
+                                onClick={this.handleEditItem(item.item.id)}
                               >
                                 Edit
                               </Button>
                               <Button
                                 className="btn btn-danger btn-sm"
-                                onClick={e => this.handleRemoveItem(e)}
+                                onClick={this.handleDeleteItem(item.item.id)}
                               >
                                 Del
                               </Button> 
