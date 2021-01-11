@@ -27,6 +27,7 @@ import {
   Row,
 } from 'reactstrap';
 
+import { addItem } from '../../redux/items';
 import { fetchUnits } from '../../redux/units';
 import { fetchItemTypes } from '../../redux/itemTypes';
 
@@ -43,6 +44,7 @@ class NewForm extends Component {
       min: 0,
       balance: 0,
       item_type: '',
+      item_group: '',
       status: 0,
     }
 
@@ -53,9 +55,12 @@ class NewForm extends Component {
   }
 
   static propTypes = {
-    units: PropTypes.array.isRequired,
-    isSuccess: PropTypes.object,
     isError: PropTypes.any,
+    isSuccess: PropTypes.object,
+    units: PropTypes.array.isRequired,
+    itemTypes: PropTypes.array.isRequired,
+    itemGroups: PropTypes.array.isRequired,
+    addItem: PropTypes.func.isRequired,
     fetchUnits: PropTypes.func.isRequired,
     fetchItemTypes: PropTypes.func.isRequired
   };
@@ -76,9 +81,10 @@ class NewForm extends Component {
   
   handleSubmit (event) {
     event.preventDefault();
-
-    this.props.onSubmit(this.state);
-    this.setState(this.initialState);
+    const { ...newItem } = this.state;
+    console.log(newItem);
+    // this.props.addItem(newItem);
+    // this.setState(this.initialState);
   }
 
   render () {
@@ -95,23 +101,8 @@ class NewForm extends Component {
                   <strong>วัสดุ</strong>
                   <small> Form</small>
                 </CardHeader>
-                <CardBody>              
-                  <FormGroup row>
-                    <Col md="3">
-                      <Label>ชื่อวัสดุ</Label>
-                    </Col>
-                    <Col xs="12" md="9">
-                      <Input
-                        id="name"
-                        name="name"
-                        type="text"
-                        value={this.state.name}
-                        onChange={this.handleChange}
-                        placeholder="ชื่อวัสดุ..."
-                      />
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
+                <CardBody>
+                <FormGroup row>
                     <Col md="3">
                       <Label>ประเภท</Label>
                     </Col>
@@ -128,6 +119,40 @@ class NewForm extends Component {
                           <option value={itemType.id} key={itemType.id}>{itemType.name}</option>
                         ))}
                       </Input>
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row>
+                    <Col md="3">
+                      <Label>กลุ่ม</Label>
+                    </Col>
+                    <Col xs="12" md="9">
+                      <Input
+                        type="select"
+                        id="item_group"
+                        name="item_group"
+                        value={this.state.item_group}
+                        onChange={this.handleChange}
+                      >
+                        <option value="">--กรุณาเลือก--</option>
+                        {itemTypes && itemTypes.map(itemType => (
+                          <option value={itemType.id} key={itemType.id}>{itemType.name}</option>
+                        ))}
+                      </Input>
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row>
+                    <Col md="3">
+                      <Label>ชื่อวัสดุ</Label>
+                    </Col>
+                    <Col xs="12" md="9">
+                      <Input
+                        id="name"
+                        name="name"
+                        type="text"
+                        value={this.state.name}
+                        onChange={this.handleChange}
+                        placeholder="ชื่อวัสดุ..."
+                      />
                     </Col>
                   </FormGroup>
                   <FormGroup row>
@@ -226,10 +251,11 @@ class NewForm extends Component {
 
 const mapStateToProps = state => ({
   units: state.unit.units,
-  itemTypes: state.itemType.itemTypes
+  itemTypes: state.itemType.itemTypes,
+  itemGroups: state.itemGroup.itemGroups
 });
 
 export default connect(
   mapStateToProps,
-  { fetchUnits, fetchItemTypes }
+  { fetchUnits, fetchItemTypes, addItem }
 )(NewForm);
