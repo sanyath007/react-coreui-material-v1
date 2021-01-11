@@ -1,5 +1,5 @@
 import axios from 'axios';
-// import { toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import {
   FETCH_DEPTS_REQUEST,
   FETCH_DEPTS_SUCCESS,
@@ -34,8 +34,7 @@ export const fetchDeptsWithPagination = link => dispatch => {
     dispatch({ type: SET_DEPTS_PAGER, payload: res.data.pager });      
   })
   .catch(err => {
-    // toast.error('Error !!');    
-    console.log(err.response);
+    toast.error(err.message);
     dispatch({ type: FETCH_DEPTS_FAILED, payload: err });
   });
 }
@@ -48,9 +47,7 @@ export const fetchDepts = () => dispatch => {
     dispatch({ type: FETCH_DEPTS_SUCCESS, payload: res.data }); 
   })
   .catch(err => {
-    // toast.error('Error !!');
-    
-    console.log(err.response);
+    toast.error(err.message);
     dispatch({ type: FETCH_DEPTS_FAILED, payload: err });
   });
 }
@@ -64,8 +61,7 @@ export const fetchDept = id => dispatch => {
     dispatch({ type: FETCH_DEPT_SUCCESS, payload: res.data });      
   })
   .catch(err => {
-    // toast.error('Error !!');
-
+    toast.error(err.message);
     dispatch({ type: FETCH_DEPT_FAILED, payload: err });
   })
 }
@@ -88,9 +84,8 @@ export const addDept = data => dispatch => {
   }).then(() => {
     dispatch(fetchDepts());
   }).catch(err => {
-    // toast.error('Error !!');
-    
-    dispatch({ type: ADD_DEPTS_FAILED, payload: err.response.data });
+    // toast.error('Error !!');    
+    dispatch({ type: ADD_DEPTS_FAILED, payload: err });
   })
 }
 
