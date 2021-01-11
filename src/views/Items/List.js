@@ -12,7 +12,7 @@ import {
   Table
 } from 'reactstrap';
 
-import { fetchItemsWithPagination } from '../../redux/items';
+import { fetchItemsWithPagination, fetchItem } from '../../redux/items';
 import { fetchItemTypes } from '../../redux/itemTypes';
 
 import Pagination from '../../components/Paginations/Pagination';
@@ -25,6 +25,7 @@ class List extends Component {
     isError: PropTypes.any,
     itemTypes: PropTypes.array.isRequired,
     fetchItemsWithPagination: PropTypes.func.isRequired,
+    fetchItem: PropTypes.func.isRequired,
     fetchItemTypes: PropTypes.func.isRequired
   };
 
@@ -43,6 +44,7 @@ class List extends Component {
     e.preventDefault();
     /** Fetch item data to edit */
     this.props.fetchItem(id);
+    
     /** Redirect to items edit view */
     this.props.history.push(`/items/edit/${id}`)
   }
@@ -152,8 +154,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(
-  mapStateToProps, {
-    fetchItemsWithPagination,
-    fetchItemTypes
-  }
+  mapStateToProps,
+  { fetchItemsWithPagination, fetchItemTypes, fetchItem }
 )(List);

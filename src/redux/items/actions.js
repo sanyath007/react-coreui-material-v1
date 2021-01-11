@@ -13,7 +13,7 @@ import {
   ADD_ITEMS_SUCCESS,
   UPDATE_ITEMS_REQUEST,
   UPDATE_ITEMS_FAILED,
-  UPDATE_ITEM_SUCCESS,
+  UPDATE_ITEMS_SUCCESS,
   DELETE_ITEMS_REQUEST,
   DELETE_ITEMS_FAILED,
   DELETE_ITEM_SUCCESS,
@@ -33,10 +33,7 @@ export const fetchItemsWithPagination = link => dispatch => {
       dispatch({ type: SET_ITEMS_PAGER, payload: res.data.pager });
     })
     .catch(err => {
-      dispatch({
-        type: FETCH_ITEMS_FAILED,
-        payload: err 
-      })
+      dispatch({ type: FETCH_ITEMS_FAILED, payload: err })
     });
 }
 
@@ -48,10 +45,7 @@ export const fetchItems = link => dispatch => {
       dispatch({ type: FETCH_ITEMS_SUCCESS, payload: res.data.items });
     })
     .catch(err => {
-      dispatch({
-        type: FETCH_ITEMS_FAILED,
-        payload: err 
-      })
+      dispatch({ type: FETCH_ITEMS_FAILED, payload: err })
     });
 }
 
@@ -63,10 +57,8 @@ export const fetchItem = itemId => dispatch => {
       dispatch({ type: FETCH_ITEM_SUCCESS, payload: res.data });
     })
     .catch(err => {
-      dispatch({
-        type: FETCH_ITEM_FAILED,
-        payload: err 
-      })
+      console.log(err);
+      dispatch({ type: FETCH_ITEM_FAILED, payload: err })
     });
 }
 
@@ -83,7 +75,7 @@ export const addItem = item => dispatch => {
     console.log(res);
     dispatch({ type: ADD_ITEMS_SUCCESS, payload: res.data.group })
   }).then(() => {
-    dispatch(fetchItems());
+    // dispatch(fetchItems());
   }).catch(err => {
     toast.error(err.message);
 
@@ -91,8 +83,26 @@ export const addItem = item => dispatch => {
   })
 }
 
-export const updateItem = () => dispatch => {
-  
+export const updateItem = (item) => dispatch => {
+  console.log(item);
+  dispatch({ type: UPDATE_ITEMS_REQUEST });
+
+  axios.put(`${url}/items/${item.id}`, item, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(res => {
+    toast.success('Successful !!');
+
+    console.log(res);
+    dispatch({ type: UPDATE_ITEMS_SUCCESS, payload: res.data.group })
+  }).then(() => {
+    // dispatch(fetchItems());
+  }).catch(err => {
+    toast.error(err.message);
+
+    dispatch({ type: UPDATE_ITEMS_FAILED, payload: err });
+  })
 }
 
 export const deleteItem = () => dispatch => {

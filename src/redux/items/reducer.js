@@ -46,7 +46,7 @@ export default function(state = initialState, action) {
         ...state,
         loading: false,
         items: action.payload,
-        errors: ''
+        errors: null
       };
     case FETCH_ITEM_REQUEST:
         return {
@@ -57,7 +57,7 @@ export default function(state = initialState, action) {
         return {
           ...state,
           loading: false,
-          items: [],
+          item: null,
           errors: action.payload
         };
     case FETCH_ITEM_SUCCESS:
@@ -65,7 +65,7 @@ export default function(state = initialState, action) {
         ...state,
         loading: false,
         item: action.payload,
-        errors: ''
+        errors: null
       };
     case SET_ITEMS_PAGER:
       return {
@@ -89,7 +89,7 @@ export default function(state = initialState, action) {
         ...state,
         loading: false,
         item: action.payload,
-        errors: ''
+        errors: null
       };
     default: return state;
   }

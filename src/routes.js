@@ -40,6 +40,7 @@ const User = React.lazy(() => import('./views/Users/User'));
 const ItemList = React.lazy(() => import('./views/Items/List'));
 const ItemDetail = React.lazy(() => import('./views/Items/Detail'));
 const ItemNew = React.lazy(() => import('./views/Items/NewForm'));
+const ItemEdit = React.lazy(() => import('./views/Items/EditForm'));
 
 const OrderList = React.lazy(() => import('./views/Orders/List'));
 const OrderNew = React.lazy(() => import('./views/Orders/NewForm'));
@@ -89,9 +90,10 @@ const routes = [
   { path: '/users', exact: true,  name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
   /** Custom routes */
-  { path: '/items', exact: true,  name: 'Items', component: ItemList },
-  { path: '/items/new', exact: true, name: 'Add New Item', component: ItemNew },
-  { path: '/items/view/:hn', exact: true, name: 'Item Details', component: ItemDetail },
+  { path: '/items', exact: true,  name: 'รายการวัสดุ', component: ItemList },
+  { path: '/items/new', exact: true, name: 'เพิ่มรายการวัสดุ', component: ItemNew },
+  { path: '/items/edit/:id', exact: true, name: 'แก้ไขรายการวัสดุ', component: ItemEdit },
+  { path: '/items/view/:id', exact: true, name: 'รายละเอียดวัสดุ', component: ItemDetail },
 
   { path: '/orders', exact: true,  name: 'Orders', component: OrderList },
   { path: '/orders/new', exact: true, name: 'Add New Order', component: OrderNew },

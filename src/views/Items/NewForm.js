@@ -114,7 +114,7 @@ class NewForm extends Component {
             <Card>
               <Form onSubmit={this.handleSubmit} encType="multipart/form-data" className="form-horizontal">
                 <CardHeader>
-                  <strong>วัสดุ</strong>
+                  <strong>เพิ่มรายการวัสดุ</strong>
                   <small> Form</small>
                 </CardHeader>
                 <CardBody>
