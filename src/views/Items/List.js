@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import {
+  Badge,
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  Row,
+  Table
+} from 'reactstrap';
 
-import { fetchItems } from '../../redux/items';
+import { fetchItemsWithPagination } from '../../redux/items';
 import { fetchItemTypes } from '../../redux/itemTypes';
 
 import Pagination from '../../components/Paginations/Pagination';
@@ -16,12 +24,12 @@ class List extends Component {
     isSuccess: PropTypes.object,
     isError: PropTypes.any,
     itemTypes: PropTypes.array.isRequired,
-    fetchItems: PropTypes.func.isRequired,
+    fetchItemsWithPagination: PropTypes.func.isRequired,
     fetchItemTypes: PropTypes.func.isRequired
   };
 
   componentDidMount() {
-    this.props.fetchItems();
+    this.props.fetchItemsWithPagination();
     this.props.fetchItemTypes();
   }
 
@@ -33,9 +41,9 @@ class List extends Component {
 
   handleEdit = (e, id) => {
     e.preventDefault();
-
+    /** Fetch item data to edit */
     this.props.fetchItem(id);
-
+    /** Redirect to items edit view */
     this.props.history.push(`/items/edit/${id}`)
   }
 
@@ -43,7 +51,8 @@ class List extends Component {
     e.preventDefault();
 
     if(window.confirm(`Are you sure to delete this items (ID: ${id}) ?`)) {
-      // this.props.deletePatient(id)
+      //TODO: To do delete item
+      // this.props.deleteItem(id)
     }
   }
 
@@ -142,7 +151,7 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps, {
-    fetchItems,
+    fetchItemsWithPagination,
     fetchItemTypes
   }
 )(List);

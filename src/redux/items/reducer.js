@@ -1,11 +1,19 @@
 import {
-  ITEMS_REQUEST,
-  ITEMS_FAILED,
-  SET_ITEMS_PAGER,
-  FETCH_ITEM_SUCCESS,
+  FETCH_ITEMS_REQUEST,
+  FETCH_ITEMS_FAILED,
   FETCH_ITEMS_SUCCESS,
-  ADD_ITEM_SUCCESS,
+  FETCH_ITEM_REQUEST,
+  FETCH_ITEM_FAILED,
+  FETCH_ITEM_SUCCESS,
+  SET_ITEMS_PAGER,
+  ADD_ITEMS_REQUEST,
+  ADD_ITEMS_FAILED,
+  ADD_ITEMS_SUCCESS,
+  UPDATE_ITEMS_REQUEST,
+  UPDATE_ITEMS_FAILED,
   UPDATE_ITEM_SUCCESS,
+  DELETE_ITEMS_REQUEST,
+  DELETE_ITEMS_FAILED,
   DELETE_ITEM_SUCCESS,
   HIDE_ALERT
 } from './types';
@@ -21,12 +29,12 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case ITEMS_REQUEST:
+    case FETCH_ITEMS_REQUEST:
       return {
         ...state,
         loading: true,
       };
-    case ITEMS_FAILED:
+    case FETCH_ITEMS_FAILED:
       return {
         ...state,
         loading: false,
@@ -40,6 +48,18 @@ export default function(state = initialState, action) {
         items: action.payload,
         errors: ''
       };
+    case FETCH_ITEM_REQUEST:
+        return {
+          ...state,
+          loading: true,
+        };
+    case FETCH_ITEM_FAILED:
+        return {
+          ...state,
+          loading: false,
+          items: [],
+          errors: action.payload
+        };
     case FETCH_ITEM_SUCCESS:
       return {
         ...state,
@@ -51,6 +71,25 @@ export default function(state = initialState, action) {
       return {
         ...state,
         pager: action.payload
+      };
+    case ADD_ITEMS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ADD_ITEMS_FAILED:
+        return {
+          ...state,
+          loading: false,
+          items: [],
+          errors: action.payload
+        };
+    case ADD_ITEMS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        item: action.payload,
+        errors: ''
       };
     default: return state;
   }

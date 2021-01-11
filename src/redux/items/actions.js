@@ -1,20 +1,30 @@
 import axios from 'axios';
 import {
-  ITEMS_REQUEST,
-  ITEMS_FAILED,
-  FETCH_ITEM_SUCCESS,
+  FETCH_ITEMS_REQUEST,
+  FETCH_ITEMS_FAILED,
   FETCH_ITEMS_SUCCESS,
+  FETCH_ITEM_REQUEST,
+  FETCH_ITEM_FAILED,
+  FETCH_ITEM_SUCCESS,
   SET_ITEMS_PAGER,
-  ADD_ITEM_SUCCESS,
+  ADD_ITEMS_REQUEST,
+  ADD_ITEMS_FAILED,
+  ADD_ITEMS_SUCCESS,
+  UPDATE_ITEMS_REQUEST,
+  UPDATE_ITEMS_FAILED,
+  UPDATE_ITEM_SUCCESS,
+  DELETE_ITEMS_REQUEST,
+  DELETE_ITEMS_FAILED,
+  DELETE_ITEM_SUCCESS,
   HIDE_ALERT
 } from './types';
 
 const url = 'http://localhost/public_html/slim3-material-api/public';
 
-export const fetchItems = link => dispatch => {
-  let endpoint = link ? link : `${url}/items`;
+export const fetchItemsWithPagination = link => dispatch => {
+  let endpoint = link ? link : `${url}/items?page=1`;
 
-  dispatch({ type: ITEMS_REQUEST });
+  dispatch({ type: FETCH_ITEMS_REQUEST });
 
   axios.get(endpoint)
     .then(res => {
@@ -23,14 +33,29 @@ export const fetchItems = link => dispatch => {
     })
     .catch(err => {
       dispatch({
-        type: ITEMS_FAILED,
+        type: FETCH_ITEMS_FAILED,
+        payload: err 
+      })
+    });
+}
+
+export const fetchItems = link => dispatch => {
+  dispatch({ type: FETCH_ITEMS_REQUEST });
+
+  axios.get(`${url}/items`)
+    .then(res => {
+      dispatch({ type: FETCH_ITEMS_SUCCESS, payload: res.data.items });
+    })
+    .catch(err => {
+      dispatch({
+        type: FETCH_ITEMS_FAILED,
         payload: err 
       })
     });
 }
 
 export const fetchItem = itemId => dispatch => {
-  dispatch({ type: ITEMS_REQUEST });
+  dispatch({ type: FETCH_ITEM_REQUEST });
 
   axios.get(`${url}/items/${itemId}`)
     .then(res => {
@@ -38,14 +63,14 @@ export const fetchItem = itemId => dispatch => {
     })
     .catch(err => {
       dispatch({
-        type: ITEMS_FAILED,
+        type: FETCH_ITEM_FAILED,
         payload: err 
       })
     });
 }
 
 export const addItem = () => dispatch => {
-  dispatch({ type: ITEMS_REQUEST });
+  dispatch({ type: ADD_ITEMS_REQUEST });
 
   let item = {};
 
@@ -55,11 +80,15 @@ export const addItem = () => dispatch => {
     }
   }).then(res => {
     console.log(res);
+    dispatch({
+      type: ADD_ITEMS_SUCCESS,
+      payload: res.data
+    })
   }).then(() => {
     dispatch(fetchItems());
   }).catch(err => {
     dispatch({
-      type: ITEMS_FAILED,
+      type: ADD_ITEMS_FAILED,
       payload: err
     });
   })
