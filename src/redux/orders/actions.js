@@ -77,7 +77,7 @@ export const addOrder = data => dispatch => {
 
       toast.success('Successful !!');
     }).then(() => {
-
+      dispatch(fetchLastOrderNo());
     }).catch(err => {
       console.log(err.response);
       dispatch({ type: ADD_ORDERS_FAILED });

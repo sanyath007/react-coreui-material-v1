@@ -137,15 +137,15 @@ class NewForm extends Component {
     e.preventDefault();
 
     let { order } = this.state;
-
+    /** Set order's order_no value from ref */
     order.order_no = this.order_no.current.props.defaultValue;
-    console.log(order);
+
     //TODO: validate data before add data to db
 
     if (order.items.length > 0) {
       this.props.addOrder(order);
 
-      // this.setState(this.initialState);
+      this.setState(this.initialState);
     } else {
       toast.error('Error: You not have items in order data');
     }
