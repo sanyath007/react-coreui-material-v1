@@ -16,7 +16,7 @@ export const fetchItemGroupsWithPagination = () => dispatch => {
 
   axios.get(`${url}/item-groups`)
     .then(res => {
-      dispatch({ type: FETCH_ITEM_GROUPS_SUCCESS, payload: res.data.itemGroups });
+      dispatch({ type: FETCH_ITEM_GROUPS_SUCCESS, payload: res.data.groups });
       dispatch({ type: SET_ITEM_GROUPS_PAGER, payload: res.data.pager });
     })
     .catch(err => {
@@ -30,7 +30,8 @@ export const fetchItemGroups = () => dispatch => {
 
   axios.get(`${url}/item-groups`)
     .then(res => {
-      dispatch({ type: FETCH_ITEM_GROUPS_SUCCESS, payload: res.data.itemGroups });
+      console.log(res);
+      dispatch({ type: FETCH_ITEM_GROUPS_SUCCESS, payload: res.data.groups });
     })
     .catch(err => {
       console.log(err)
@@ -43,7 +44,7 @@ export const fetchItemGroup = id => dispatch => {
 
   axios.get(`${url}/item-groups/${id}`)
     .then(res => {
-      dispatch({ type: FETCH_ITEM_GROUP_SUCCESS, payload: res.data.itemGroup });
+      dispatch({ type: FETCH_ITEM_GROUP_SUCCESS, payload: res.data.group });
     })
     .catch(err => {
       console.log(err)

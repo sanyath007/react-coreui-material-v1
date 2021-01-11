@@ -34,8 +34,9 @@ export default function(state = initialState, action) {
     case FETCH_ITEM_GROUPS_SUCCESS:
       return {
         ...state,
+        loading: false,
         itemGroups: action.payload,
-        errors: ''
+        errors: null
       }
     case FETCH_ITEM_GROUP_REQUEST:
       return {
@@ -52,8 +53,9 @@ export default function(state = initialState, action) {
     case FETCH_ITEM_GROUP_SUCCESS:
       return {
         ...state,
+        loading: false,
         itemGroup: action.payload,
-        errors: ''
+        errors: null
       }
     case SET_ITEM_GROUPS_PAGER:
       return {

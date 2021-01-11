@@ -30,6 +30,7 @@ import {
 import { addItem } from '../../redux/items';
 import { fetchUnits } from '../../redux/units';
 import { fetchItemTypes } from '../../redux/itemTypes';
+import { fetchItemGroups } from '../../redux/itemGroups';
 
 class NewForm extends Component {
   constructor (props) {
@@ -68,6 +69,7 @@ class NewForm extends Component {
   componentDidMount() {
     this.props.fetchUnits();
     this.props.fetchItemTypes();
+    this.props.fetchItemGroups();
   }
 
   handleChange (event) {
@@ -77,6 +79,19 @@ class NewForm extends Component {
     this.setState({
       [name]: value
     });
+
+    if (name === 'item_group') {
+      this.handleItemGroupSelected(value);
+    }
+  }
+
+  handleItemGroupSelected (id) {
+    let selectedGroup = this.props.itemGroups.filter(group => parseInt(group.id) === parseInt(id));
+
+    this.setState(prevState => ({
+      ...prevState,
+      name: selectedGroup[0].group_name+ ' No.'
+    }));
   }
   
   handleSubmit (event) {
@@ -88,7 +103,7 @@ class NewForm extends Component {
   }
 
   render () {
-    let { units, itemTypes } = this.props;
+    let { units, itemTypes, itemGroups } = this.props;
 
     return (
 
@@ -115,8 +130,8 @@ class NewForm extends Component {
                         onChange={this.handleChange}
                       >
                         <option value="">--กรุณาเลือก--</option>
-                        {itemTypes && itemTypes.map(itemType => (
-                          <option value={itemType.id} key={itemType.id}>{itemType.name}</option>
+                        {itemTypes && itemTypes.map(type => (
+                          <option value={type.id} key={type.id}>{type.name}</option>
                         ))}
                       </Input>
                     </Col>
@@ -134,8 +149,8 @@ class NewForm extends Component {
                         onChange={this.handleChange}
                       >
                         <option value="">--กรุณาเลือก--</option>
-                        {itemTypes && itemTypes.map(itemType => (
-                          <option value={itemType.id} key={itemType.id}>{itemType.name}</option>
+                        {itemGroups && itemGroups.map(group => (
+                          <option value={group.id} key={group.id}>{group.group_name}</option>
                         ))}
                       </Input>
                     </Col>
@@ -257,5 +272,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchUnits, fetchItemTypes, addItem }
+  { fetchUnits, fetchItemTypes, fetchItemGroups, addItem }
 )(NewForm);
