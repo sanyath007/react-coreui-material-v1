@@ -186,11 +186,11 @@ class NewForm extends Component {
     }
   }
 
-  handleEditItem = editId => e => {
-    e.preventDefault();
+  // handleEditItem = editId => e => {
+  //   e.preventDefault();
 
-    console.log(editId);
-  }
+  //   //TODO: handle editing behavior
+  // }
   
   handleDeleteItem = deleteId => e => {
     e.preventDefault();
@@ -337,12 +337,12 @@ class NewForm extends Component {
                             <td style={{ textAlign: 'center' }}>{item.amount}</td>
                             <td style={{ textAlign: 'center' }}>{item.total}</td>
                             <td style={{ textAlign: 'center' }}>
-                              <Button
+                              {/* <Button
                                 className="btn btn-warning btn-sm mr-1"
                                 onClick={this.handleEditItem(item.item.id)}
                               >
                                 Edit
-                              </Button>
+                              </Button> */}
                               <Button
                                 className="btn btn-danger btn-sm"
                                 onClick={this.handleDeleteItem(item.item.id)}
