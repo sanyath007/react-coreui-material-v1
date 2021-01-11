@@ -36,7 +36,7 @@ class List extends Component {
   handlePaginateLink = (e, link) => {
     e.preventDefault();
     
-    this.props.fetchItems(link);
+    this.props.fetchItemsWithPagination(link);
   }
 
   handleEdit = (e, id) => {
