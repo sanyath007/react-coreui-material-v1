@@ -76,10 +76,9 @@ class NewForm extends Component {
     const name = event.target.name;
     const value = event.target.value;
     
-    this.setState({
-      [name]: value
-    });
+    this.setState({ [name]: value });
 
+    /** If input name is 'item_group' call handleItemGroupSelected method */
     if (name === 'item_group') {
       this.handleItemGroupSelected(value);
     }
