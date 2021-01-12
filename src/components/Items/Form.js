@@ -41,8 +41,24 @@ const initialState = {
 class ItemForm extends Component {
   constructor (props) {
     super(props);
-
-    this.state = initialState;
+    
+    this.state = props.item 
+      ? {
+          item: {
+            id: props.item ? props.item.id : '',
+            name: props.item ? props.item.name : '',
+            unit: props.item ? props.item.unit.unit_id : '',
+            cost: props.item ? props.item.cost : 0.00,
+            stock: props.item ? props.item.stock : 0,
+            min: props.item ? props.item.min : 0,
+            balance: props.item ? props.item.balance : 0,
+            item_type: props.item ? props.item.item_type.id : '',
+            item_group: props.item ? props.item.item_group.id : '',
+            status: props.item ? props.item.status : 0,
+          },
+          modal: false
+        }
+      : initialState;
 
     this.handleChange = this.handleChange.bind(this);
     // this.toggle = this.toggle.bind(this);
@@ -55,17 +71,16 @@ class ItemForm extends Component {
 
   componentDidUpdate(nextProps) {
     console.log('This is componentDidUpdate method');
-    const { item, isEditing } = this.props;
-    console.log('isEditing is ' +isEditing);
+    // const { item, isEditing } = this.props;
     
-    if (isEditing && nextProps.item !== item) {
-      this.setState(prevState => {
-        return {
-          ...prevState,
-          item: item
-        };
-      });
-    }
+    // if (isEditing && nextProps.item !== item) {
+    //   this.setState(prevState => {
+    //     return {
+    //       ...prevState,
+    //       item: item
+    //     };
+    //   });
+    // }
   }
 
   handleChange(e) {
@@ -107,7 +122,7 @@ class ItemForm extends Component {
   
   render() {
     let { units, itemTypes, itemGroups, handleSubmit } = this.props;
-    console.log(this.state.item);
+
     return (
       <div className="animated fadeIn">
         <Row>

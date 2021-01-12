@@ -65,12 +65,16 @@ class EditForm extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  item: state.item.item,
-  units: state.unit.units,
-  itemTypes: state.itemType.itemTypes,
-  itemGroups: state.itemGroup.itemGroups
-});
+const mapStateToProps = (state, props) => {
+  const { id } = props.match.params;
+
+  return {
+    item: state.item.items.find(item => parseInt(item.id) === parseInt(id)),
+    units: state.unit.units,
+    itemTypes: state.itemType.itemTypes,
+    itemGroups: state.itemGroup.itemGroups
+  }
+};
 
 export default connect(
   mapStateToProps, {
