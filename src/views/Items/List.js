@@ -42,6 +42,7 @@ class List extends Component {
 
   handleEdit = (e, id) => {
     e.preventDefault();
+    
     /** Fetch item data to edit */
     this.props.fetchItem(id);
     

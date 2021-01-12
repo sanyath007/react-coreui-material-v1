@@ -85,24 +85,24 @@ export const addItem = item => dispatch => {
 
 export const updateItem = (item) => dispatch => {
   console.log(item);
-  dispatch({ type: UPDATE_ITEMS_REQUEST });
+  // dispatch({ type: UPDATE_ITEMS_REQUEST });
 
-  axios.put(`${url}/items/${item.id}`, item, {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }).then(res => {
-    toast.success('Successful !!');
+  // axios.put(`${url}/items/${item.id}`, item, {
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   }
+  // }).then(res => {
+  //   toast.success('Successful !!');
 
-    console.log(res);
-    dispatch({ type: UPDATE_ITEMS_SUCCESS, payload: res.data.group })
-  }).then(() => {
-    // dispatch(fetchItems());
-  }).catch(err => {
-    toast.error(err.message);
+  //   console.log(res);
+  //   dispatch({ type: UPDATE_ITEMS_SUCCESS, payload: res.data.group })
+  // }).then(() => {
+  //   // dispatch(fetchItems());
+  // }).catch(err => {
+  //   toast.error(err.message);
 
-    dispatch({ type: UPDATE_ITEMS_FAILED, payload: err });
-  })
+  //   dispatch({ type: UPDATE_ITEMS_FAILED, payload: err });
+  // })
 }
 
 export const deleteItem = () => dispatch => {

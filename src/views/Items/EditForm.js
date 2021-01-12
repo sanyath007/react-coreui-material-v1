@@ -7,19 +7,10 @@ import { fetchUnits } from '../../redux/units';
 import { fetchItemTypes } from '../../redux/itemTypes';
 import { fetchItemGroups } from '../../redux/itemGroups';
 
-import ItemForm from './ItemForm';
+import ItemForm from '../../components/Items/Form';
 
 const initialState = {
-  id: '',
-  name: '',
-  unit: '',
-  cost: 0.00,
-  stock: 0,
-  min: 0,
-  balance: 0,
-  item_type: '',
-  item_group: '',
-  status: 0
+  isEditing: false,
 };
 
 class EditForm extends Component {
@@ -67,6 +58,7 @@ class EditForm extends Component {
           itemTypes={itemTypes}
           itemGroups={itemGroups}
           handleSubmit={this.handleSubmit}
+          isEditing={true}
         />
       </div>
     );
@@ -81,6 +73,10 @@ const mapStateToProps = state => ({
 });
 
 export default connect(
-  mapStateToProps,
-  { fetchUnits, fetchItemTypes, fetchItemGroups, updateItem }
+  mapStateToProps, {
+    fetchUnits,
+    fetchItemTypes,
+    fetchItemGroups,
+    updateItem 
+  }
 )(EditForm);
