@@ -55,9 +55,10 @@ class ItemForm extends Component {
 
   componentDidUpdate(nextProps) {
     console.log('This is componentDidUpdate method');
-    const { item } = this.props;
+    const { item, isEditing } = this.props;
+    console.log('isEditing is ' +isEditing);
     
-    if (nextProps.item !== item) {
+    if (isEditing && nextProps.item !== item) {
       this.setState(prevState => {
         return {
           ...prevState,
