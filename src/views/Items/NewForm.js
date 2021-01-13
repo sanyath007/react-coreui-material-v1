@@ -10,7 +10,7 @@ import { fetchItemGroups } from '../../redux/itemGroups';
 import ItemForm from '../../components/Items/Form';
 
 const initialState = {
-  status: 0,
+  status: false,
 };
 
 class NewForm extends Component {

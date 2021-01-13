@@ -269,10 +269,10 @@ class ItemForm extends Component {
                         value={this.state.item.stock}
                         onChange={this.handleChange}
                         placeholder="Stock"
-                        className={`${(validateErrors && validateErrors.balance) ? 'is-invalid' : ''} form-control`}
+                        className={`${(validateErrors && validateErrors.stock) ? 'is-invalid' : ''} form-control`}
                       />
                       <div className="invalid-feedback">
-                        {validateErrors && validateErrors.balance && validateErrors.balance.map(msg => {
+                        {validateErrors && validateErrors.stock && validateErrors.stock.map(msg => {
                           return msg;
                         })}
                       </div>
@@ -290,10 +290,10 @@ class ItemForm extends Component {
                         value={this.state.item.min}
                         onChange={this.handleChange}
                         placeholder="จำนวนขั้นต่ำ"
-                        className={`${(validateErrors && validateErrors.balance) ? 'is-invalid' : ''} form-control`}
+                        className={`${(validateErrors && validateErrors.min) ? 'is-invalid' : ''} form-control`}
                       />
                       <div className="invalid-feedback">
-                        {validateErrors && validateErrors.balance && validateErrors.balance.map(msg => {
+                        {validateErrors && validateErrors.min && validateErrors.min.map(msg => {
                           return msg;
                         })}
                       </div>

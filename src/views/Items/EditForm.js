@@ -10,7 +10,7 @@ import { fetchItemGroups } from '../../redux/itemGroups';
 import ItemForm from '../../components/Items/Form';
 
 const initialState = {
-  isEditing: false,
+  status: false,
 };
 
 class EditForm extends Component {
@@ -23,8 +23,7 @@ class EditForm extends Component {
   }
 
   static propTypes = {
-    isError: PropTypes.any,
-    isSuccess: PropTypes.object,
+    errors: PropTypes.any,
     item: PropTypes.object,
     units: PropTypes.array.isRequired,
     itemTypes: PropTypes.array.isRequired,
@@ -41,14 +40,12 @@ class EditForm extends Component {
     this.props.fetchItemGroups();
   }
 
-  handleSubmit = item => e => {
-    e.preventDefault();
-    
+  handleSubmit = item => {    
     this.props.updateItem(item);
   }
 
   render() {
-    let { item, units, itemTypes, itemGroups } = this.props;
+    let { item, units, itemTypes, itemGroups, errors } = this.props;
     
     return (
       <div className="animated fadeIn">
@@ -58,7 +55,8 @@ class EditForm extends Component {
           itemTypes={itemTypes}
           itemGroups={itemGroups}
           handleSubmit={this.handleSubmit}
-          formMode={true}
+          formMode={false}
+          validateErrors={errors}
         />
       </div>
     );
@@ -72,7 +70,8 @@ const mapStateToProps = (state, props) => {
     item: state.item.items.find(item => parseInt(item.id) === parseInt(id)),
     units: state.unit.units,
     itemTypes: state.itemType.itemTypes,
-    itemGroups: state.itemGroup.itemGroups
+    itemGroups: state.itemGroup.itemGroups,
+    errors: state.item.errors
   }
 };
 

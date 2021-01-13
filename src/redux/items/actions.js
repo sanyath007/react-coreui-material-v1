@@ -64,14 +64,12 @@ export const fetchItem = itemId => dispatch => {
 
 export const addItem = item => dispatch => {
   dispatch({ type: ADD_ITEMS_REQUEST });
-  console.log(item);
 
   axios.post(`${url}/items`, item, {
     headers: {
       'Content-Type': 'application/json'
     }
   }).then(res => {
-    console.log(res);
     if (res.data.status == 1) {
       toast.success('Successful !!');
       dispatch({ type: ADD_ITEMS_SUCCESS, payload: res.data.group });
@@ -82,33 +80,32 @@ export const addItem = item => dispatch => {
   }).then(() => {
     // dispatch(fetchItems());
   }).catch(err => {
-    console.log(err);
     toast.error(err.message);
-
     dispatch({ type: ADD_ITEMS_FAILED, payload: err });
   });
 }
 
 export const updateItem = (item) => dispatch => {
-  console.log(item);
-  // dispatch({ type: UPDATE_ITEMS_REQUEST });
+  dispatch({ type: UPDATE_ITEMS_REQUEST });
 
-  // axios.put(`${url}/items/${item.id}`, item, {
-  //   headers: {
-  //     'Content-Type': 'application/json'
-  //   }
-  // }).then(res => {
-  //   toast.success('Successful !!');
-
-  //   console.log(res);
-  //   dispatch({ type: UPDATE_ITEMS_SUCCESS, payload: res.data.group })
-  // }).then(() => {
-  //   // dispatch(fetchItems());
-  // }).catch(err => {
-  //   toast.error(err.message);
-
-  //   dispatch({ type: UPDATE_ITEMS_FAILED, payload: err });
-  // })
+  axios.put(`${url}/items/${item.id}`, item, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(res => {
+    if (res.data.status == 1) {
+      toast.success('Successful !!');
+      dispatch({ type: UPDATE_ITEMS_SUCCESS, payload: res.data.item })
+    } else {
+      toast.error(res.data.message);
+      dispatch({ type: ADD_ITEMS_FAILED, payload: res.data.errors });
+    }
+  }).then(() => {
+    // dispatch(fetchItems());
+  }).catch(err => {
+    toast.error(err.message);
+    dispatch({ type: UPDATE_ITEMS_FAILED, payload: err });
+  })
 }
 
 export const deleteItem = () => dispatch => {
