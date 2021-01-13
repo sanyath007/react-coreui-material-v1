@@ -64,23 +64,29 @@ export const fetchItem = itemId => dispatch => {
 
 export const addItem = item => dispatch => {
   dispatch({ type: ADD_ITEMS_REQUEST });
+  console.log(item);
 
   axios.post(`${url}/items`, item, {
     headers: {
       'Content-Type': 'application/json'
     }
   }).then(res => {
-    toast.success('Successful !!');
-
     console.log(res);
-    dispatch({ type: ADD_ITEMS_SUCCESS, payload: res.data.group })
+    if (res.data.status == 1) {
+      toast.success('Successful !!');
+      dispatch({ type: ADD_ITEMS_SUCCESS, payload: res.data.group });
+    } else {
+      toast.error(res.data.message);
+      dispatch({ type: ADD_ITEMS_FAILED, payload: res.data.errors });
+    }
   }).then(() => {
     // dispatch(fetchItems());
   }).catch(err => {
+    console.log(err);
     toast.error(err.message);
 
     dispatch({ type: ADD_ITEMS_FAILED, payload: err });
-  })
+  });
 }
 
 export const updateItem = (item) => dispatch => {

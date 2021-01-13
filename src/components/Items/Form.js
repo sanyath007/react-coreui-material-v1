@@ -61,6 +61,7 @@ class ItemForm extends Component {
       : initialState;
 
     this.handleChange = this.handleChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
     // this.toggle = this.toggle.bind(this);
   }
 
@@ -114,6 +115,11 @@ class ItemForm extends Component {
     }));
   }
 
+  onSubmit (e) {
+    e.preventDefault();
+
+    this.props.handleSubmit(this.state.item)
+  }
   // toggle() {
   //   this.setState({
   //     modal: !this.state.modal
@@ -121,16 +127,16 @@ class ItemForm extends Component {
   // }
   
   render() {
-    let { units, itemTypes, itemGroups, handleSubmit } = this.props;
+    let { units, itemTypes, itemGroups, validateErrors } = this.props;
 
     return (
       <div className="animated fadeIn">
         <Row>
           <Col xs="12" md="12" sm="6">
             <Card>
-              <Form onSubmit={handleSubmit(this.state.item)} encType="multipart/form-data" className="form-horizontal">
+              <Form onSubmit={this.onSubmit} encType="multipart/form-data" className="form-horizontal">
                 <CardHeader>
-                  <strong>แก้ไขรายการวัสดุ</strong>
+                  <strong>{this.props.formMode ? 'เพิ่มรายการวัสดุ' : 'แก้ไขรายการวัสดุ'}</strong>
                   <small> Form</small>
                 </CardHeader>
                 <CardBody>
@@ -145,12 +151,18 @@ class ItemForm extends Component {
                         name="item_type"
                         value={this.state.item.item_type}
                         onChange={this.handleChange}
+                        className={`${(validateErrors && validateErrors.item_type) ? 'is-invalid' : ''} form-control`}
                       >
                         <option value="">--กรุณาเลือก--</option>
                         {itemTypes && itemTypes.map(type => (
                           <option value={type.id} key={type.id}>{type.name}</option>
                         ))}
                       </Input>
+                      <div className="invalid-feedback">
+                        {validateErrors && validateErrors.item_type && validateErrors.item_type.map(msg => {
+                          return msg;
+                        })}
+                      </div>
                     </Col>
                   </FormGroup>
                   <FormGroup row>
@@ -164,12 +176,18 @@ class ItemForm extends Component {
                         name="item_group"
                         value={this.state.item.item_group}
                         onChange={this.handleChange}
+                        className={`${(validateErrors && validateErrors.item_group) ? 'is-invalid' : ''} form-control`}
                       >
                         <option value="">--กรุณาเลือก--</option>
                         {itemGroups && itemGroups.map(group => (
                           <option value={group.id} key={group.id}>{group.group_name}</option>
                         ))}
                       </Input>
+                      <div className="invalid-feedback">
+                        {validateErrors && validateErrors.item_group && validateErrors.item_group.map(msg => {
+                          return msg;
+                        })}
+                      </div>
                     </Col>
                   </FormGroup>
                   <FormGroup row>
@@ -184,7 +202,13 @@ class ItemForm extends Component {
                         value={this.state.item.name}
                         onChange={this.handleChange}
                         placeholder="ชื่อวัสดุ..."
+                        className={`${(validateErrors && validateErrors.name) ? 'is-invalid' : ''} form-control`}
                       />
+                      <div className="invalid-feedback">
+                        {validateErrors && validateErrors.name && validateErrors.name.map(msg => {
+                          return msg;
+                        })}
+                      </div>
                     </Col>
                   </FormGroup>
                   <FormGroup row>
@@ -198,17 +222,23 @@ class ItemForm extends Component {
                         name="unit"
                         value={this.state.item.unit}
                         onChange={this.handleChange}
+                        className={`${(validateErrors && validateErrors.unit) ? 'is-invalid' : ''} form-control`}
                       >
                         <option value="">--กรุณาเลือก--</option>
                         {units && units.map(unit => (
                           <option value={unit.unit_id} key={unit.unit_id}>{unit.unit_name}</option>
                         ))}
                       </Input>
+                      <div className="invalid-feedback">
+                        {validateErrors && validateErrors.unit && validateErrors.unit.map(msg => {
+                          return msg;
+                        })}
+                      </div>
                     </Col>
                   </FormGroup>
                   <FormGroup row>
                     <Col md="3">
-                      <Label>ราคา</Label>
+                      <Label>ราคาต่อหน่วย</Label>
                     </Col>
                     <Col xs="12" md="9">
                       <Input
@@ -217,8 +247,14 @@ class ItemForm extends Component {
                         type="text"
                         value={this.state.item.cost}
                         onChange={this.handleChange}
-                        placeholder="ชื่อ"
+                        placeholder="ราคาต่อหน่วย"
+                        className={`${(validateErrors && validateErrors.cost) ? 'is-invalid' : ''} form-control`}
                       />
+                      <div className="invalid-feedback">
+                        {validateErrors && validateErrors.cost && validateErrors.cost.map(msg => {
+                          return msg;
+                        })}
+                      </div>
                     </Col>
                   </FormGroup>
                   <FormGroup row>
@@ -233,12 +269,18 @@ class ItemForm extends Component {
                         value={this.state.item.stock}
                         onChange={this.handleChange}
                         placeholder="Stock"
+                        className={`${(validateErrors && validateErrors.balance) ? 'is-invalid' : ''} form-control`}
                       />
+                      <div className="invalid-feedback">
+                        {validateErrors && validateErrors.balance && validateErrors.balance.map(msg => {
+                          return msg;
+                        })}
+                      </div>
                     </Col>
                   </FormGroup>
                   <FormGroup row>
                     <Col md="3">
-                      <Label>Min</Label>
+                      <Label>จำนวนขั้นต่ำ</Label>
                     </Col>
                     <Col xs="12" md="9">
                       <Input
@@ -247,8 +289,14 @@ class ItemForm extends Component {
                         type="text"
                         value={this.state.item.min}
                         onChange={this.handleChange}
-                        placeholder="Min"
+                        placeholder="จำนวนขั้นต่ำ"
+                        className={`${(validateErrors && validateErrors.balance) ? 'is-invalid' : ''} form-control`}
                       />
+                      <div className="invalid-feedback">
+                        {validateErrors && validateErrors.balance && validateErrors.balance.map(msg => {
+                          return msg;
+                        })}
+                      </div>
                     </Col>
                   </FormGroup>
                   <FormGroup row>
@@ -263,10 +311,10 @@ class ItemForm extends Component {
                         value={this.state.item.balance}
                         onChange={this.handleChange}
                         placeholder="คงเหลือ"
-                        className={`${(this.props.errors && this.props.errors.balance) ? 'is-invalid' : ''} form-control`}
+                        className={`${(validateErrors && validateErrors.balance) ? 'is-invalid' : ''} form-control`}
                       />
                       <div className="invalid-feedback">
-                        {this.props.errors && this.props.errors.balance && this.props.errors.balance.map(msg => {
+                        {validateErrors && validateErrors.balance && validateErrors.balance.map(msg => {
                           return msg;
                         })}
                       </div>
@@ -274,9 +322,14 @@ class ItemForm extends Component {
                   </FormGroup>
                 </CardBody>
                 <CardFooter>
-                  <Button type="submit" size="sm" color="warning">
-                    <i className="fa fa-edit"></i> แก้ไขวัสดุ
-                  </Button>
+                  {this.props.formMode 
+                    ? <Button type="submit" size="sm" color="primary">
+                        <i className="fa fa-dot-circle-o"></i> เพิ่มวัสดุ
+                      </Button>
+                    : <Button type="submit" size="sm" color="warning">
+                        <i className="fa fa-edit"></i> แก้ไขวัสดุ
+                      </Button>
+                  }
                 </CardFooter>
               </Form>
             </Card>

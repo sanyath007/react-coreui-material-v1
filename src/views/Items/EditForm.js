@@ -58,7 +58,7 @@ class EditForm extends Component {
           itemTypes={itemTypes}
           itemGroups={itemGroups}
           handleSubmit={this.handleSubmit}
-          isEditing={true}
+          formMode={true}
         />
       </div>
     );
