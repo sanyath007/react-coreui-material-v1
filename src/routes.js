@@ -97,7 +97,7 @@ const routes = [
 
   { path: '/orders', exact: true,  name: 'Orders', component: OrderList },
   { path: '/orders/new', exact: true, name: 'Add New Order', component: OrderNew },
-  // { path: '/orders/view/:hn', exact: true, name: 'Item Details', component: OrderDetail },
+  // { path: '/orders/view/:id', exact: true, name: 'Order Details', component: OrderDetail },
 ];
 
 export default routes;
